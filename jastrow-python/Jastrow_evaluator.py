@@ -1,4 +1,6 @@
 import zmq
+import logging
+import time
 import json
 from icecream import ic
 import numpy as np
@@ -38,13 +40,14 @@ class Jastrow():
     def laplace(self, data):
         return self.laplace
 
+
 class Server():
 
-    def __init__(self, jastrow):
+    def __init__(self, jastrow, port=5555):
         self.s = []
         self.context = zmq.Context()
         self.socket = self.context.socket(zmq.REP)
-        self.socket.bind("tcp://*:5555")
+        self.socket.bind(f"tcp://*:{port}")
         self.running = True
         self.jastrow = jastrow
 
@@ -63,10 +66,13 @@ class Server():
                 ic(data)
                 if data["type"] == "value":
                     message = " ".join([str(x) for x in self.jastrow.value(data) ])
-                if data["type"] == "grad":
+                elif data["type"] == "grad":
                     message = " ".join([str(x) for x in self.jastrow.grad(data) ])
-                if data["type"] == "laplace":
+                    ic(message)
+                elif data["type"] == "laplace":
                     message = " ".join([str(x) for x in self.jastrow.laplace(data) ])
+                else:
+                    message("Unknown type")
             except Exception as e:
                 ic(e)
             ret = message
@@ -79,5 +85,6 @@ class Server():
             s.join()
 
 if __name__ == "__main__":
-    s = Server(Jastrow())
+    s = Server(Jastrow(), port = 6543)
     s.run()
+
