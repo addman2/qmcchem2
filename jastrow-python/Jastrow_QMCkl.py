@@ -1,10 +1,12 @@
 from Jastrow_evaluator import Jastrow
+import trexio
+import qmckl
 
 class JastrowQMCkl(Jastrow):
 
     def __init__(self, trexio_file, *args, **kwargs):
         import trexio
-        super().__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.trexio_file = trexio_file
         self.qmckl_instance = None
