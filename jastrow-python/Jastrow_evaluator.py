@@ -5,6 +5,7 @@ import json
 import numpy as np
 import time
 from copy import deepcopy
+from functools import reduce
 
 VERBOSE=True
 
@@ -21,7 +22,7 @@ def _ic(m):
     except NameError as e:
         print(m)
 
-def cache(caching):
+def cache(caching, threshold = 1.0e-6):
 
     # caching should be list of strings:
 
@@ -32,13 +33,17 @@ def cache(caching):
         if not type(t) == str:
             raise TypeError("Variable caching has to be list or tuple of str")
 
+    # Why int that is crazy!
+    if not type(threshold) in (int, float):
+        raise TypeError("Variable threshold has to be int or float")
+
     def wrapper(f):
         def func(self, data):
             if not self.last:
                 self.eval(data)
             else:
-                if (np.array(data["nucl_coord"]) -  np.array(self.last["nucl_coord"])).any() > 1.0e-6 or \
-                   (np.array(data["elec_coord"]) -  np.array(self.last["elec_coord"])).any() > 1.0e-6:
+                if reduce(lambda x, y: x or y,
+                          [(np.array(data[val]) -  np.array(self.last[val])).any() > threshold for val in caching]):
                     self.eval(data)
             return f(self, data)
         return func
