@@ -18,7 +18,7 @@ data = [ \
 ("ao_basis_ao_power"               , "integer"       , "(ao_num,3)"            ),
 ("ao_basis_ao_expo"                , "real"          , "(ao_num,ao_prim_num_max)" ),
 ("ao_basis_ao_coef"                , "real"          , "(ao_num,ao_prim_num_max)" ),
-("ao_two_e_erf_ints_mu_erf"        , "real"          , ""                   ),
+("hamiltonian_mu_erf"              , "real"          , ""                   ),
 ("tc_keywords_j1b_type"            , "integer"       , ""                   ),
 ("tc_keywords_j1b_pen"             , "real"          , "(nucl_num)"         ),
 ("tc_keywords_j1b_pen_coef"        , "real"          , "(nucl_num)"         ),

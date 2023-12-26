@@ -168,7 +168,7 @@ BEGIN_PROVIDER [real, mu_erf]
   implicit none
 
   mu_erf = 0.5
-  call get_ao_two_e_erf_ints_mu_erf(mu_erf)
+  call get_hamiltonian_mu_erf(mu_erf)
 
 END_PROVIDER
 
