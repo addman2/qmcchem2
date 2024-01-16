@@ -42,8 +42,8 @@ BEGIN_PROVIDER [ integer, jast_type ]
   implicit none
   character*(32) :: buffer
 
-  buffer = types(t_Simple)
-  jast_type = t_Core
+  buffer = types(t_None)
+  jast_type = t_None
   call get_jastrow_jast_type(buffer)
   if (buffer == types(t_Simple)) then
     jast_type = t_Simple
@@ -57,11 +57,13 @@ BEGIN_PROVIDER [ integer, jast_type ]
     jast_type = t_Mu_1b
   else if (buffer == types(t_Muenv)) then
     jast_type = t_Muenv
+  else if (buffer == types(t_Qmckl)) then
+    jast_type = t_Qmckl
   else if (buffer == types(t_Mur)) then
     jast_type = t_Mur
     print*, ' do not forget to increase the block time'
   else
-    call abrt(irp_here, 'Jastrow type should be (None|Simple|Core|Mu|Mu_1b|Muenv|Mur)')
+    call abrt(irp_here, 'Jastrow type should be (None|Simple|Qmckl|Core|Mu|Mu_1b|Muenv|Mur)')
   endif
   call cinfo(irp_here, 'jast_type',buffer)
 
@@ -95,11 +97,13 @@ BEGIN_PROVIDER [ integer, jpsi_type ]
     jpsi_type = t_Mu_1b
   else if (buffer == types(t_Muenv)) then
     jpsi_type = t_Muenv
+  else if (buffer == types(t_Qmckl)) then
+    jpsi_type = t_Qmckl
   else if (buffer == types(t_Mur)) then
     jpsi_type = t_Mur
     print*, ' do not forget to increase the block time'
   else
-    call abrt(irp_here, 'jpsi type should be (None|Simple|Core|Mu|Mu_1b|Muenv|Mur)')
+    call abrt(irp_here, 'jpsi type should be (None|Simple|Qmckl|Core|Mu|Mu_1b|Muenv|Mur)')
   endif
   call cinfo(irp_here, 'jpsi_type',buffer)
 
