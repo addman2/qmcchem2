@@ -124,7 +124,7 @@ subroutine j_elec_mur(r1, r2, je_val, je_der, je_lap)
   endif
 
   return
-end subroutine j_elec_mur
+end
 
 ! ---
 
@@ -157,9 +157,9 @@ subroutine mur_val_der_lap_r1(r1, r2, mur_val, mur_der, mur_lap)
   !mur_lap    = 2.d0 / r12
   !return
 
-  PROVIDE j1b_type
+  PROVIDE mur_type
 
-  if(j1b_type .eq. 200) then
+  if(mur_type .eq. 1) then
 
     ! mu[rho(r)] = mu_r_ct \sqrt(rho(r)) + mu_erf \exp(-rho(r))
 
@@ -190,7 +190,7 @@ subroutine mur_val_der_lap_r1(r1, r2, mur_val, mur_der, mur_lap)
     mur_der(3) = mur_der(3) + tmp * rho_der(3)
     mur_lap    = mur_lap + 0.5d0 * tmp * (rho_lap - 0.5d0 * rho_der_square / rho_val)
 
-  elseif(j1b_type .eq. 201) then
+  elseif(mur_type .eq. 2) then
 
     ! mu[rho(r)] = mu_r_ct rho(r) + mu_erf \exp(-rho(r))
 
@@ -215,13 +215,13 @@ subroutine mur_val_der_lap_r1(r1, r2, mur_val, mur_der, mur_lap)
 
   else
  
-    print*, 'j1b_type = ', j1b_type, 'not implemented yet'
+    print *, ' Error in mur_val_der_lap_r1: Unknown mur_type = ', mur_type
     stop
 
   endif
 
   return
-end subroutine mur_val_der_lap_r1
+end
 
 ! ---
 
@@ -285,4 +285,6 @@ end subroutine mur_val_der_lap_r1
   enddo
 
 END_PROVIDER
+
+! ---
 

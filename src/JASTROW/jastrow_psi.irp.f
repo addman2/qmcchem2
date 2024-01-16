@@ -33,9 +33,8 @@ SUBST [X]
 Simple ;;
 Core   ;;
 Mu     ;;
-Mu_1b  ;;
-Muenv  ;;
 Mur    ;;
+Qmckl  ;;
 END_TEMPLATE
 
     if (ifirst == 0) then
@@ -102,9 +101,8 @@ SUBST [ X ]
 Simple ;;
 Core   ;;
 Mu     ;;
-Mu_1b  ;;
-Muenv  ;;
 Mur    ;;
+Qmckl  ;;
 END_TEMPLATE
 
     !DIR$ VECTOR ALIGNED
@@ -158,9 +156,8 @@ SUBST [X]
 Simple ;;
 Core   ;;
 Mu     ;;
-Mu_1b  ;;
-Muenv  ;;
 Mur    ;;
+Qmckl  ;;
 END_TEMPLATE
 
     !DIR$ VECTOR ALIGNED
@@ -207,9 +204,8 @@ SUBST [X]
 Simple ;;
 Core   ;;
 Mu     ;;
-Mu_1b  ;;
-Muenv  ;;
 Mur    ;;
+Qmckl  ;;
 END_TEMPLATE
 
   endif

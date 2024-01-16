@@ -14,7 +14,7 @@
  if (do_jast) then
    double precision :: argexpo
 BEGIN_TEMPLATE
-   if (jast_type == t_$X) then
+   if (j2e_type == t_$X) then
      argexpo = 0.d0
      !DIR$ VECTOR ALIGNED
      !DIR$ LOOP COUNT (200)
@@ -26,10 +26,8 @@ SUBST [X]
 Simple ;;
 Core   ;;
 Mu     ;;
-Qmckl  ;;
-Mu_1b  ;;
-Muenv  ;;
 Mur    ;;
+Qmckl  ;;
 END_TEMPLATE
 
    if (ifirst == 0) then
@@ -78,7 +76,7 @@ END_PROVIDER
  if (do_jast) then
 
 BEGIN_TEMPLATE
-   if ( jast_type == t_$X ) then
+   if ( j2e_type == t_$X ) then
       !DIR$ VECTOR ALIGNED
       !DIR$ LOOP COUNT (200)
       do i = 1, elec_num
@@ -91,10 +89,8 @@ SUBST [ X ]
 Simple ;;
 Core   ;;
 Mu     ;;
-Qmckl  ;;
-Mu_1b  ;;
-Muenv  ;;
 Mur    ;;
+Qmckl  ;;
 END_TEMPLATE
    !DIR$ VECTOR ALIGNED
    !DIR$ LOOP COUNT (200)
@@ -133,7 +129,7 @@ END_PROVIDER
 ! if (do_jast) then
 !
 !BEGIN_TEMPLATE
-!   if (jast_type == t_$X) then
+!   if (j2e_type == t_$X) then
 !     !DIR$ VECTOR ALIGNED
 !     !DIR$ LOOP COUNT (200)
 !     do i=1,elec_num
@@ -147,9 +143,8 @@ END_PROVIDER
 !Simple ;;
 !Core   ;;
 !Mu     ;;
-!Mu_1b  ;;
-!Muenv  ;;
 !Mur    ;;
+!Qmckl  ;;
 !END_TEMPLATE
 !
 !   !DIR$ VECTOR ALIGNED
@@ -187,7 +182,7 @@ BEGIN_PROVIDER [ double precision, jast_lapl_jast_inv, (elec_num) ]
   if(do_jast) then
 
 BEGIN_TEMPLATE
-    if(jast_type == t_$X) then
+    if(j2e_type == t_$X) then
       !DIR$ VECTOR ALIGNED
       !DIR$ LOOP COUNT (200)
       do i = 1, elec_num
@@ -201,10 +196,8 @@ SUBST [X]
 Simple ;;
 Core   ;;
 Mu     ;;
-Qmckl  ;;
-Mu_1b  ;;
-Muenv  ;;
 Mur    ;;
+Qmckl  ;;
 END_TEMPLATE
 
   endif
@@ -213,7 +206,7 @@ END_PROVIDER
 
 ! ---
 
-BEGIN_PROVIDER [ double precision, jast_lapl1, (elec_num) ]
+BEGIN_PROVIDER [double precision, jast_lapl1, (elec_num)]
 
   BEGIN_DOC  
   !
@@ -237,7 +230,7 @@ BEGIN_PROVIDER [ double precision, jast_lapl1, (elec_num) ]
   if(do_jast) then
 
 BEGIN_TEMPLATE
-    if(jast_type == t_$X) then
+    if(j2e_type == t_$X) then
       !DIR$ VECTOR ALIGNED
       !DIR$ LOOP COUNT (200)
       do i = 1, elec_num
@@ -248,10 +241,8 @@ SUBST [X]
 Simple ;;
 Core   ;;
 Mu     ;;
-Qmckl  ;;
-Mu_1b  ;;
-Muenv  ;;
 Mur    ;;
+Qmckl  ;;
 END_TEMPLATE
 
   endif
@@ -260,7 +251,7 @@ END_PROVIDER
 
 ! ---
 
-BEGIN_PROVIDER [ double precision, jast_lapl2, (elec_num) ]
+BEGIN_PROVIDER [double precision, jast_lapl2, (elec_num)]
 
   BEGIN_DOC  
   !

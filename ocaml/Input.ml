@@ -775,7 +775,7 @@ end
 
 module Jastrow_type : sig
 
-  type t = None | Core | Simple | Mu | Mu_1b | Muenv | Mur
+  type t = None | Core | Simple | Mu | Mur | Qmckl
   val doc : string
   val read  : unit -> t
   val write : t -> unit
@@ -784,8 +784,8 @@ module Jastrow_type : sig
 
 end = struct
 
-  type t = None | Core | Simple | Mu | Mu_1b | Muenv | Mur
-  let doc = "Type of Jastrow factor [ None | Core | Simple | Mu | Mu_1b | Muenv | Mur ]"
+  type t = None | Core | Simple | Mu | Mur | Qmckl
+  let doc = "Type of Jastrow factor [ None | Core | Simple | Mu | Mur | Qmckl ]"
 
   let of_string s =
     match String.capitalize_ascii (String.trim  s) with
@@ -793,30 +793,28 @@ end = struct
     | "Simple" -> Simple
     | "None" -> None
     | "Mu" -> Mu
-    | "Mu_1b" -> Mu_1b
-    | "Muenv" -> Muenv
     | "Mur" -> Mur
-    | _ -> failwith "Jastrow type should be [ None | Core | Simple | Mu | Mu_1b | Muenv | Mur ]"
+    | "Qmckl" -> Qmckl
+    | _ -> failwith "j2e_type should be [ None | Core | Simple | Mu | Mur | Qmckl ]"
 
 
   let to_string = function
   | Core -> "Core"
   | Simple -> "Simple"
   | Mu -> "Mu"
-  | Mu_1b -> "Mu_1b"
-  | Muenv -> "Muenv"
   | Mur -> "Mur"
   | None -> "None"
+  | Qmckl -> "Qmckl"
 
 
   let read () =
     let _ =
       Lazy.force Qputils.ezfio_filename
     in
-    if (not (Ezfio.has_jastrow_jast_type ())) then
-      Lazy.force Default.jastrow_jast_type
-      |> Ezfio.set_jastrow_jast_type ;
-    Ezfio.get_jastrow_jast_type ();
+    if (not (Ezfio.has_jastrow_j2e_type ())) then
+      Lazy.force Default.jastrow_j2e_type
+      |> Ezfio.set_jastrow_j2e_type ;
+    Ezfio.get_jastrow_j2e_type ();
     |> of_string
 
 
@@ -825,14 +823,14 @@ end = struct
       Lazy.force Qputils.ezfio_filename
     in
     to_string t
-    |> Ezfio.set_jastrow_jast_type
+    |> Ezfio.set_jastrow_j2e_type
 
 
 end
 
 module Jpsi_type : sig
 
-  type t = None | Core | Simple | Mu | Mu_1b | Muenv | Mur
+  type t = None | Core | Simple | Mu | Mur | Qmckl
   val doc : string
   val read  : unit -> t
   val write : t -> unit
@@ -841,8 +839,8 @@ module Jpsi_type : sig
 
 end = struct
 
-  type t = None | Core | Simple | Mu | Mu_1b | Muenv | Mur
-  let doc = "Type of Jpsi factor [ None | Core | Simple | Mu | Mu_1b | Muenv | Mur ]"
+  type t = None | Core | Simple | Mu | Mur | Qmckl
+  let doc = "Type of Jpsi factor [ None | Core | Simple | Mu | Mur | Qmckl ]"
 
   let of_string s = 
     match String.capitalize_ascii (String.trim  s) with
@@ -850,20 +848,18 @@ end = struct
     | "Simple" -> Simple
     | "None" -> None
     | "Mu" -> Mu
-    | "Mu_1b" -> Mu_1b
-    | "Muenv" -> Muenv
     | "Mur" -> Mur
-    | _ -> failwith "Jpsi type should be [ None | Core | Simple | Mu | Mu_1b | Muenv | Mur ]"
+    | "Qmckl" -> Qmckl
+    | _ -> failwith "jpsi_type should be [ None | Core | Simple | Mu | Mur | Qmckl ]"
 
 
   let to_string = function
   | Core -> "Core"
   | Simple -> "Simple"
   | Mu -> "Mu"
-  | Mu_1b -> "Mu_1b"
-  | Muenv -> "Muenv"
   | Mur -> "Mur"
   | None -> "None"
+  | Qmckl -> "Qmckl"
 
 
   let read () = 
