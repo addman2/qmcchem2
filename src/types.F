@@ -21,7 +21,7 @@
       integer, parameter :: t_Running  = 2
       integer, parameter :: t_Stopping = 3
 
-      character*(32)     :: types(26) = &
+      character*(32)     :: types(27) = &
       (/  '               ',   &
           '               ',   &
           'Brownian       ',   &

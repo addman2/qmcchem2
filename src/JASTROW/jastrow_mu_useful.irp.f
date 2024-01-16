@@ -82,7 +82,7 @@ subroutine j_elec_env(r, jenv)
   double precision, intent(in)  :: r(3)
   double precision, intent(out) :: jenv
   integer                       :: iA
-  double precision              :: a, riA, r2
+  double precision              :: a, c, riA, r2
   double precision              :: dx, dy, dz
 
   PROVIDE env_type
@@ -96,12 +96,13 @@ subroutine j_elec_env(r, jenv)
     jenv = 1.d0
     !DIR$ LOOP COUNT (100)
     do iA = 1, nucl_num
-      a   = jenv_pen(iA)
+      a   = env_expo(iA)
+      c   = env_coef(iA)
       dx  = r(1) - nucl_coord(iA,1)
       dy  = r(2) - nucl_coord(iA,2)
       dz  = r(3) - nucl_coord(iA,3)
       riA = dsqrt(dx*dx + dy*dy + dz*dz)
-      jenv = jenv - dexp(-a*riA)
+      jenv = jenv - c * dexp(-a*riA)
     enddo
 
   elseif(env_type .eq. "prod-gauss") then
@@ -109,7 +110,7 @@ subroutine j_elec_env(r, jenv)
     jenv = 1.d0
     !DIR$ LOOP COUNT (100)
     do iA = 1, nucl_num
-      a   = jenv_pen(iA)
+      a   = env_expo(iA)
       dx  = r(1) - nucl_coord(iA,1)
       dy  = r(2) - nucl_coord(iA,2)
       dz  = r(3) - nucl_coord(iA,3)
@@ -122,12 +123,13 @@ subroutine j_elec_env(r, jenv)
     jenv = 1.d0
     !DIR$ LOOP COUNT (100)
     do iA = 1, nucl_num
-      a   = jenv_pen(iA)
+      a   = env_expo(iA)
+      c   = env_coef(iA)
       dx  = r(1) - nucl_coord(iA,1)
       dy  = r(2) - nucl_coord(iA,2)
       dz  = r(3) - nucl_coord(iA,3)
       r2  = dx*dx + dy*dy + dz*dz
-      jenv = jenv - dexp(-a*r2)
+      jenv = jenv - c * dexp(-a*r2)
     enddo
 
   elseif(env_type .eq. "sum-quartic") then
@@ -135,12 +137,13 @@ subroutine j_elec_env(r, jenv)
     jenv = 1.d0
     !DIR$ LOOP COUNT (100)
     do iA = 1, nucl_num
-      a   = jenv_pen(iA)
+      a   = env_expo(iA)
+      c   = env_coef(iA)
       dx  = r(1) - nucl_coord(iA,1)
       dy  = r(2) - nucl_coord(iA,2)
       dz  = r(3) - nucl_coord(iA,3)
       r2  = dx*dx + dy*dy + dz*dz
-      jenv = jenv - dexp(-a*r2*r2)
+      jenv = jenv - c * dexp(-a*r2*r2)
     enddo
 
   else

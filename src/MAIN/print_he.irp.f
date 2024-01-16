@@ -11,10 +11,17 @@ program print_he
   print *,  'Closed-shell MOs                         : ', mo_closed_num
   print *,  'Number of MOs in determinants            : ', num_present_mos
 
-  print *, ' jastrow mu     ', mu_erf
-  print *, ' jastrow 1b type', j1b_type
-  print *, ' jastrow 1b     ', j1b_pen, j1b_coeff
-  print *, ' sign of jastrow', sgn_jast
+  print *, ' j2e_type = ', j2e_type
+  print *, ' mu_erf = ', mu_erf
+
+  print *, ' j1e_type = ', j1e_type
+  print *, ' j1e_coef = ', j1e_coef
+  print *, ' j1e_expo = ', j1e_expo
+
+  print *, ' env_type', env_type
+  print *, ' env_ceof = ', env_coef
+  print *, ' env_expo = ', env_expo
+
 
   print *, ' jastrow value:'
   print *, jast_value, jast_value_inv

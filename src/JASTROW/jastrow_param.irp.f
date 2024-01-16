@@ -43,7 +43,7 @@ BEGIN_PROVIDER [integer, j2e_type]
   character*(32) :: buffer
 
   buffer = types(t_Simple)
-  j2e_type = t_Core
+  j2e_type = t_None
   call get_jastrow_j2e_type(buffer)
   if (buffer == types(t_Simple)) then
     j2e_type = t_Simple
@@ -152,7 +152,7 @@ BEGIN_PROVIDER [real, env_coef, (nucl_num)]
   implicit none
   include '../types.F'
   env_coef(:) = 1.0
-  call get_jastrow_env_ceof(env_coef)
+  call get_jastrow_env_coef(env_coef)
 END_PROVIDER
 
 ! ---
@@ -171,14 +171,14 @@ BEGIN_PROVIDER [integer, j1e_size]
   call get_jastrow_j1e_size(j1e_size)
 END_PROVIDER
 
-BEGIN_PROVIDER [real, j1e_coef]
+BEGIN_PROVIDER [real, j1e_coef, (j1e_size,nucl_num)]
   implicit none
   include '../types.F'
   j1e_coef = 0.d0
   call get_jastrow_j1e_coef(j1e_coef)
 END_PROVIDER
 
-BEGIN_PROVIDER [real, j1e_expo]
+BEGIN_PROVIDER [real, j1e_expo, (j1e_size,nucl_num)]
   implicit none
   include '../types.F'
   j1e_expo = 1.d0

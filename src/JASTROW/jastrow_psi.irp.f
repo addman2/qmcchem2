@@ -30,8 +30,8 @@ BEGIN_TEMPLATE
       enddo
     endif
 SUBST [X]
-Simple ;;
 Core   ;;
+Simple ;;
 Mu     ;;
 Mur    ;;
 Qmckl  ;;
@@ -41,7 +41,6 @@ END_TEMPLATE
       dshift = argexpo
       ifirst = 1
     endif
-    !argexpo -= dshift
 
     jpsi_value = dexp(argexpo)
 
@@ -98,8 +97,8 @@ BEGIN_TEMPLATE
       enddo
     endif
 SUBST [ X ]
-Simple ;;
 Core   ;;
+Simple ;;
 Mu     ;;
 Mur    ;;
 Qmckl  ;;
@@ -153,8 +152,8 @@ BEGIN_TEMPLATE
       enddo
     endif
 SUBST [X]
-Simple ;;
 Core   ;;
+Simple ;;
 Mu     ;;
 Mur    ;;
 Qmckl  ;;
@@ -201,13 +200,14 @@ BEGIN_TEMPLATE
       enddo
     endif
 SUBST [X]
-Simple ;;
 Core   ;;
+Simple ;;
 Mu     ;;
 Mur    ;;
 Qmckl  ;;
 END_TEMPLATE
 
+!   print *, jast_elec_Jpsi_lapl(1) , jast_elec_Qmckl_lapl(1)
   endif
 
 END_PROVIDER

@@ -181,11 +181,10 @@ END_PROVIDER
         vj_lapl_uij   += (tmp2_ij - mu_div_sqrtpi * tmp0_ij) * vi_env(j)
       enddo
 
-      jast_elec_rsdft_grad_x(i) = vj_derivx_uij * vi_env(i) + vj_uij * deriv_env_x(i)
-      jast_elec_rsdft_grad_y(i) = vj_derivy_uij * vi_env(i) + vj_uij * deriv_env_y(i)
-      jast_elec_rsdft_grad_z(i) = vj_derivz_uij * vi_env(i) + vj_uij * deriv_env_z(i)
-
-      jast_elec_rsdft_lapl  (i) = vj_lapl_uij * vi_env(i)                   &
+      jast_elec_Mu_grad_x(i) = vj_derivx_uij * vi_env(i) + vj_uij * deriv_env_x(i)
+      jast_elec_Mu_grad_y(i) = vj_derivy_uij * vi_env(i) + vj_uij * deriv_env_y(i)
+      jast_elec_Mu_grad_z(i) = vj_derivz_uij * vi_env(i) + vj_uij * deriv_env_z(i)
+      jast_elec_Mu_lapl  (i) = vj_lapl_uij * vi_env(i)                   &
                                 + 2.d0 * ( vj_derivx_uij * deriv_env_x(i)   &
                                          + vj_derivy_uij * deriv_env_y(i)   & 
                                          + vj_derivz_uij * deriv_env_z(i) ) &
@@ -197,10 +196,10 @@ END_PROVIDER
   if(j1e_type .eq. "none") then
     tmp = 1.d0 / (dble(elec_num) - 1.d0)
     do i = 1, elec_num
-      jast_elec_rsdft_grad_x(i) = jast_elec_rsdft_grad_x(i) + tmp * jast_elec_1e_grad_x(i)
-      jast_elec_rsdft_grad_y(i) = jast_elec_rsdft_grad_y(i) + tmp * jast_elec_1e_grad_y(i)
-      jast_elec_rsdft_grad_z(i) = jast_elec_rsdft_grad_z(i) + tmp * jast_elec_1e_grad_z(i)
-      jast_elec_rsdft_lapl  (i) = jast_elec_rsdft_lapl  (i) + tmp * jast_elec_1e_lapl  (i)
+      jast_elec_Mu_grad_x(i) = jast_elec_Mu_grad_x(i) + tmp * jast_elec_1e_grad_x(i)
+      jast_elec_Mu_grad_y(i) = jast_elec_Mu_grad_y(i) + tmp * jast_elec_1e_grad_y(i)
+      jast_elec_Mu_grad_z(i) = jast_elec_Mu_grad_z(i) + tmp * jast_elec_1e_grad_z(i)
+      jast_elec_Mu_lapl  (i) = jast_elec_Mu_lapl  (i) + tmp * jast_elec_1e_lapl  (i)
     enddo
   endif
 
@@ -227,8 +226,9 @@ BEGIN_PROVIDER [double precision, vi_env, (elec_num_8)]
       !DIR$ LOOP COUNT (100)
       do iA = 1, nucl_num
         a   = env_expo(iA)
+        c   = env_coef(iA)
         riA = nucl_elec_dist(iA,i)
-        tmp = tmp - dexp(-a*riA)
+        tmp = tmp - c * dexp(-a*riA)
       enddo
       vi_env(i) = tmp
     enddo
@@ -253,8 +253,9 @@ BEGIN_PROVIDER [double precision, vi_env, (elec_num_8)]
       !DIR$ LOOP COUNT (100)
       do iA = 1, nucl_num
         a   = env_expo(iA)
+        c   = env_coef(iA)
         riA = nucl_elec_dist(iA,i)
-        tmp = tmp - env_coef(iA) * dexp(-a*riA*riA)
+        tmp = tmp - c * dexp(-a*riA*riA)
       enddo
       vi_env(i) = tmp
     enddo
@@ -266,8 +267,9 @@ BEGIN_PROVIDER [double precision, vi_env, (elec_num_8)]
       !DIR$ LOOP COUNT (100)
       do iA = 1, nucl_num
         a   = env_expo(iA)
+        c   = env_coef(iA)
         riA = nucl_elec_dist(iA,i)
-        tmp = tmp - dexp(-a*riA*riA*riA*riA)
+        tmp = tmp - c * dexp(-a*riA*riA*riA*riA)
       enddo
       vi_env(i) = tmp
     enddo
@@ -311,13 +313,14 @@ END_PROVIDER
       tmpl = 0.d0
       !DIR$ LOOP COUNT (100)
       do iA = 1, nucl_num
-        a   = env_expo(iA)
+        a = env_expo(iA)
+        c = env_coef(iA)
         ! xi - xA = nucl_elec_dist_vec(1,iA,i)
         dx  = nucl_elec_dist_vec(1,iA,i)
         dy  = nucl_elec_dist_vec(2,iA,i)
         dz  = nucl_elec_dist_vec(3,iA,i)
         riA = nucl_elec_dist(iA,i)
-        tmp = a * dexp(-a*riA) / riA
+        tmp = a * c * dexp(-a*riA) / riA
         tmpx = tmpx + tmp * dx
         tmpy = tmpy + tmp * dy
         tmpz = tmpz + tmp * dz
@@ -374,14 +377,15 @@ END_PROVIDER
       tmpl = 0.d0
       !DIR$ LOOP COUNT (100)
       do iA = 1, nucl_num
-        a   = env_expo(iA)
+        a = env_expo(iA)
+        c = env_coef(iA)
         ! xi - xA = nucl_elec_dist_vec(1,iA,i)
         dx  = nucl_elec_dist_vec(1,iA,i)
         dy  = nucl_elec_dist_vec(2,iA,i)
         dz  = nucl_elec_dist_vec(3,iA,i)
         riA = nucl_elec_dist(iA,i)
         arg = a * riA * riA
-        tmp = a * env_coef(iA) * dexp(-arg)
+        tmp = a * c * dexp(-arg)
         tmpx = tmpx + tmp * dx
         tmpy = tmpy + tmp * dy
         tmpz = tmpz + tmp * dz
@@ -402,7 +406,8 @@ END_PROVIDER
       tmpl = 0.d0
       !DIR$ LOOP COUNT (100)
       do iA = 1, nucl_num
-        a   = env_expo(iA)
+        a = env_expo(iA)
+        c = env_coef(iA)
         ! xi - xA = nucl_elec_dist_vec(1,iA,i)
         dx  = nucl_elec_dist_vec(1,iA,i)
         dy  = nucl_elec_dist_vec(2,iA,i)
@@ -410,7 +415,7 @@ END_PROVIDER
         riA = nucl_elec_dist(iA,i)
         r2  = riA * riA
         r4  = r2  * r2
-        tmp = a * r2 * dexp(-a*r4)
+        tmp = a * c * r2 * dexp(-a*r4)
         tmpx = tmpx + tmp * dx
         tmpy = tmpy + tmp * dy
         tmpz = tmpz + tmp * dz
@@ -443,7 +448,10 @@ END_PROVIDER
   !
   END_DOC
 
+  include '../constants.F'
+
   implicit none
+  integer          :: i, j
   double precision :: mu_div_sqrtpi, mu_sqrtpi_inv, rij, mu_rij
   double precision :: tmp0_ij, tmp1_ij, tmp2_ij, tmp3_ij
   double precision :: vj_lapl_uij, vj_derivx_uij, vj_derivy_uij, vj_derivz_uij, vj_uij
