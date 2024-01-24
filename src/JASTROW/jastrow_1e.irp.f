@@ -67,11 +67,36 @@
 
   elseif(j1e_type .eq. "Charge_Harmonizer_AO") then
 
-    do i = 1, elec_num
+    !do i = 1, elec_num
 
-      r(1) = elec_coord_transp(1,i)
-      r(2) = elec_coord_transp(2,i)
-      r(3) = elec_coord_transp(3,i)
+    !  r(1) = elec_coord_transp(1,i)
+    !  r(2) = elec_coord_transp(2,i)
+    !  r(3) = elec_coord_transp(3,i)
+
+    !  tmp1  = 0.d0
+    !  tmp_x = 0.d0
+    !  tmp_y = 0.d0
+    !  tmp_z = 0.d0
+    !  tmp2  = 0.d0
+    !  do j = 1, ao_num
+    !    c = j1e_coef_ao(j)
+    !    call get_ao_val_der_lap(j, r, ao_val, ao_der, ao_lap)
+    !    tmp1  = tmp1  + c * dble(ao_val   )  
+    !    tmp_x = tmp_x + c * dble(ao_der(1))
+    !    tmp_y = tmp_y + c * dble(ao_der(2))
+    !    tmp_z = tmp_z + c * dble(ao_der(3))
+    !    tmp2  = tmp2  + c * dble(ao_lap   )
+    !  enddo
+
+    !  jast_elec_1e_value (i) = tmp1
+    !  jast_elec_1e_grad_x(i) = tmp_x 
+    !  jast_elec_1e_grad_y(i) = tmp_y 
+    !  jast_elec_1e_grad_z(i) = tmp_z 
+    !  jast_elec_1e_lapl  (i) = tmp2
+    !enddo
+
+    PROVIDE qmckl_ao_vgl
+    do i = 1, elec_num
 
       tmp1  = 0.d0
       tmp_x = 0.d0
@@ -79,16 +104,12 @@
       tmp_z = 0.d0
       tmp2  = 0.d0
       do j = 1, ao_num
-
         c = j1e_coef_ao(j)
-
-        call get_ao_val_der_lap(j, r, ao_val, ao_der, ao_lap)
-
-        tmp1  = tmp1  + c * dble(ao_val   )  
-        tmp_x = tmp_x + c * dble(ao_der(1))
-        tmp_y = tmp_y + c * dble(ao_der(2))
-        tmp_z = tmp_z + c * dble(ao_der(3))
-        tmp2  = tmp2  + c * dble(ao_lap   )
+        tmp1  = tmp1  + c * qmckl_ao_vgl(j,1,i)
+        tmp_x = tmp_x + c * qmckl_ao_vgl(j,2,i)
+        tmp_y = tmp_y + c * qmckl_ao_vgl(j,3,i)
+        tmp_z = tmp_z + c * qmckl_ao_vgl(j,4,i)
+        tmp2  = tmp2  + c * qmckl_ao_vgl(j,5,i)
       enddo
 
       jast_elec_1e_value (i) = tmp1
@@ -97,6 +118,7 @@
       jast_elec_1e_grad_z(i) = tmp_z 
       jast_elec_1e_lapl  (i) = tmp2
     enddo
+
 
   else
 
