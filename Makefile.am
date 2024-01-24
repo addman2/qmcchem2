@@ -154,6 +154,8 @@ IRPSOURCES= \
   src/JASTROW/jastrow_mu_useful.irp.f \
   src/JASTROW/jastrow_mur.irp.f \
   src/JASTROW/jastrow_qmckl.irp.f \
+  src/JASTROW/jastrow_env.irp.f \
+  src/JASTROW/jastrow_boys.irp.f \
   src/MAIN/admc.irp.f \
   src/MAIN/SVD_info.irp.f \
   src/MAIN/vmc_test.irp.f \

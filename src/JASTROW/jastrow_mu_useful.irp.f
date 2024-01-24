@@ -63,7 +63,7 @@ subroutine j_elec_Mu(r1, r2, je)
   mu_rij = mu_erf * rij
   u_ij   = 0.5d0 * (rij * (1.d0 - derf(mu_rij)) - dexp(-mu_rij*mu_rij)/(dsqpi*mu_erf))
 
-  if(env_type .eq. "none") then
+  if(env_type .eq. "None") then
     je = u_ij
   else
     call j_elec_env(r1, vi)
@@ -87,11 +87,11 @@ subroutine j_elec_env(r, jenv)
 
   PROVIDE env_type
 
-  if(env_type .eq. "none") then
+  if(env_type .eq. "None") then
 
     jenv = 0.d0
 
-  elseif(env_type .eq. "sum-slat") then
+  elseif(env_type .eq. "Sum_Slat") then
 
     jenv = 1.d0
     !DIR$ LOOP COUNT (100)
@@ -105,7 +105,7 @@ subroutine j_elec_env(r, jenv)
       jenv = jenv - c * dexp(-a*riA)
     enddo
 
-  elseif(env_type .eq. "prod-gauss") then
+  elseif(env_type .eq. "Prod_Gauss") then
 
     jenv = 1.d0
     !DIR$ LOOP COUNT (100)
@@ -118,7 +118,7 @@ subroutine j_elec_env(r, jenv)
       jenv = jenv * (1.d0 - dexp(-a*riA*riA))
     enddo
 
-  elseif(env_type .eq. "sum-gauss") then
+  elseif(env_type .eq. "Sum_Gauss") then
 
     jenv = 1.d0
     !DIR$ LOOP COUNT (100)
@@ -132,7 +132,7 @@ subroutine j_elec_env(r, jenv)
       jenv = jenv - c * dexp(-a*r2)
     enddo
 
-  elseif(env_type .eq. "sum-quartic") then
+  elseif(env_type .eq. "Sum_Quartic") then
 
     jenv = 1.d0
     !DIR$ LOOP COUNT (100)

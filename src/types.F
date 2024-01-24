@@ -15,13 +15,14 @@
       integer, parameter :: t_Mu       = 24
       integer, parameter :: t_Mur      = 25
       integer, parameter :: t_Qmckl    = 26
+      integer, parameter :: t_Boys     = 27
 
       integer, parameter :: t_Stopped  = 0
       integer, parameter :: t_Queued   = 1
       integer, parameter :: t_Running  = 2
       integer, parameter :: t_Stopping = 3
 
-      character*(32)     :: types(27) = &
+      character*(32)     :: types(28) = &
       (/  '               ',   &
           '               ',   &
           'Brownian       ',   &
@@ -48,5 +49,6 @@
           'Mu             ',   &
           'Mur            ',   &
           'Qmckl          ',   &
+          'Boys           ',   &
           '               '/)     
 

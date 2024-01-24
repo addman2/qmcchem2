@@ -87,6 +87,25 @@ END_PROVIDER
 
 ! ---
 
+BEGIN_PROVIDER [double precision, deltaE_Jmu_3b]
+
+  BEGIN_DOC
+  !
+  ! 3b-part of Eloc_Jmu
+  !
+  END_DOC
+
+  implicit none
+
+  deltaE_Jmu_3b = deltaE_Jmu_grad_3b
+
+  deltaE_Jmu_3b_min = min(deltaE_Jmu_3b_min, deltaE_Jmu_3b)
+  deltaE_Jmu_3b_max = max(deltaE_Jmu_3b_max, deltaE_Jmu_3b)
+  SOFT_TOUCH deltaE_Jmu_3b_min deltaE_Jmu_3b_max
+END_PROVIDER
+
+! ---
+
 BEGIN_PROVIDER [double precision, deltaE_Jpsi]
 
   BEGIN_DOC

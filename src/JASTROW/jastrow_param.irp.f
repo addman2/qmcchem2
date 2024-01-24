@@ -58,8 +58,10 @@ BEGIN_PROVIDER [integer, j2e_type]
     print*, ' do not forget to increase the block time'
   else if (buffer == types(t_Qmckl)) then
     j2e_type = t_Qmckl
+  else if (buffer == types(t_Boys)) then
+    j2e_type = t_Boys
   else
-    call abrt(irp_here, 'j2e_type should be (None|Simple|Core|Mu|Mu_r|Qmckl)')
+    call abrt(irp_here, 'j2e_type should be (None|Simple|Core|Mu|Mu_r|Qmckl|Boys)')
   endif
   call cinfo(irp_here, 'j2e_type', buffer)
 
@@ -94,8 +96,10 @@ BEGIN_PROVIDER [integer, jpsi_type]
     print*, ' do not forget to increase the block time'
   else if (buffer == types(t_Qmckl)) then
     jpsi_type = t_Qmckl
+  else if (buffer == types(t_Boys)) then
+    jpsi_type = t_Boys
   else
-    call abrt(irp_here, 'jpsi type should be (None|Simple|Core|Mu|Mu_r|Qmckl)')
+    call abrt(irp_here, 'jpsi type should be (None|Simple|Core|Mu|Mu_r|Qmckl|Boys)')
   endif
   call cinfo(irp_here, 'jpsi_type',buffer)
 
@@ -116,6 +120,12 @@ BEGIN_PROVIDER [real, mu_erf]
   implicit none
   mu_erf = 0.5
   call get_hamiltonian_mu_erf(mu_erf)
+END_PROVIDER
+
+BEGIN_PROVIDER [real, a_boys]
+  implicit none
+  a_boys = 1.0
+  call get_jastrow_a_boys(a_boys)
 END_PROVIDER
 
 ! ---
@@ -174,15 +184,37 @@ END_PROVIDER
 BEGIN_PROVIDER [real, j1e_coef, (j1e_size,nucl_num)]
   implicit none
   include '../types.F'
-  j1e_coef = 0.d0
+  j1e_coef = 0.0
   call get_jastrow_j1e_coef(j1e_coef)
 END_PROVIDER
 
 BEGIN_PROVIDER [real, j1e_expo, (j1e_size,nucl_num)]
   implicit none
   include '../types.F'
-  j1e_expo = 1.d0
+  j1e_expo = 1.0
   call get_jastrow_j1e_expo(j1e_expo)
+END_PROVIDER
+
+BEGIN_PROVIDER [real, j1e_coef_ao, (ao_num)]
+
+  implicit none
+  integer :: i
+
+  include '../types.F'
+
+  j1e_coef_ao = 0.0
+
+  call get_jastrow_j1e_coef_ao(j1e_coef_ao)
+
+  do i = 1, ao_num
+
+    if(abs(j1e_coef_ao(i)) .lt. 1e-7) then
+
+      j1e_coef_ao(i) = 0.0
+
+    endif
+  enddo
+
 END_PROVIDER
 
 ! ---

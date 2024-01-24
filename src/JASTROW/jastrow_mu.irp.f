@@ -48,7 +48,7 @@ BEGIN_PROVIDER [double precision, jast_elec_Mu_value, (elec_num_8)]
 
   mu_pi = 1.d0 / (dsqpi * mu_erf)
 
-  if(env_type .ne. "none") then
+  if(env_type .ne. "None") then
 
     do i = 1, elec_num
 
@@ -88,11 +88,11 @@ BEGIN_PROVIDER [double precision, jast_elec_Mu_value, (elec_num_8)]
 
   endif ! env_type
 
-  if(j1e_type .ne. "none") then
+  if(j1e_type .ne. "None") then
     do i = 1, elec_num
       jast_elec_Mu_value(i) = jast_elec_Mu_value(i) + jast_elec_1e_value(i)
     enddo
-  endif ! j1e_type
+  endif
 
 END_PROVIDER
 
@@ -115,7 +115,7 @@ END_PROVIDER
   implicit none
   integer          :: i, j
   double precision :: mu_div_sqrtpi, mu_sqrtpi_inv, rij, mu_rij
-  double precision :: tmp0_ij, tmp1_ij, tmp2_ij, tmp3_ij, tmp
+  double precision :: tmp0_ij, tmp1_ij, tmp2_ij, tmp3_ij
   double precision :: vj_lapl_uij, vj_derivx_uij, vj_derivy_uij, vj_derivz_uij, vj_uij
 
   PROVIDE j1e_type
@@ -123,7 +123,7 @@ END_PROVIDER
 
   mu_div_sqrtpi = mu_erf / dsqpi
 
-  if(env_type .eq. "none") then
+  if(env_type .eq. "None") then
 
     do i = 1, elec_num
 
@@ -184,7 +184,7 @@ END_PROVIDER
       jast_elec_Mu_grad_x(i) = vj_derivx_uij * vi_env(i) + vj_uij * deriv_env_x(i)
       jast_elec_Mu_grad_y(i) = vj_derivy_uij * vi_env(i) + vj_uij * deriv_env_y(i)
       jast_elec_Mu_grad_z(i) = vj_derivz_uij * vi_env(i) + vj_uij * deriv_env_z(i)
-      jast_elec_Mu_lapl  (i) = vj_lapl_uij * vi_env(i)                   &
+      jast_elec_Mu_lapl  (i) = vj_lapl_uij * vi_env(i)                      &
                                 + 2.d0 * ( vj_derivx_uij * deriv_env_x(i)   &
                                          + vj_derivy_uij * deriv_env_y(i)   & 
                                          + vj_derivz_uij * deriv_env_z(i) ) &
@@ -193,245 +193,13 @@ END_PROVIDER
 
   endif ! env_type
 
-  if(j1e_type .eq. "none") then
-    tmp = 1.d0 / (dble(elec_num) - 1.d0)
+  if(j1e_type .ne. "None") then
     do i = 1, elec_num
-      jast_elec_Mu_grad_x(i) = jast_elec_Mu_grad_x(i) + tmp * jast_elec_1e_grad_x(i)
-      jast_elec_Mu_grad_y(i) = jast_elec_Mu_grad_y(i) + tmp * jast_elec_1e_grad_y(i)
-      jast_elec_Mu_grad_z(i) = jast_elec_Mu_grad_z(i) + tmp * jast_elec_1e_grad_z(i)
-      jast_elec_Mu_lapl  (i) = jast_elec_Mu_lapl  (i) + tmp * jast_elec_1e_lapl  (i)
+      jast_elec_Mu_grad_x(i) = jast_elec_Mu_grad_x(i) + jast_elec_1e_grad_x(i)
+      jast_elec_Mu_grad_y(i) = jast_elec_Mu_grad_y(i) + jast_elec_1e_grad_y(i)
+      jast_elec_Mu_grad_z(i) = jast_elec_Mu_grad_z(i) + jast_elec_1e_grad_z(i)
+      jast_elec_Mu_lapl  (i) = jast_elec_Mu_lapl  (i) + jast_elec_1e_lapl  (i)
     enddo
-  endif
-
-END_PROVIDER
-
-! ---
-
-BEGIN_PROVIDER [double precision, vi_env, (elec_num_8)]
-
-  implicit none
-  integer          :: i, iA
-  integer          :: ii, phase, b
-  double precision :: a, riA, tmp
-  double precision :: expo, c
-
-  if(env_type .eq. "none") then
-
-    vi_env = 0.d0
-
-  elseif(env_type .eq. "sum-slat") then
-
-    do i = 1, elec_num
-      tmp = 1.d0
-      !DIR$ LOOP COUNT (100)
-      do iA = 1, nucl_num
-        a   = env_expo(iA)
-        c   = env_coef(iA)
-        riA = nucl_elec_dist(iA,i)
-        tmp = tmp - c * dexp(-a*riA)
-      enddo
-      vi_env(i) = tmp
-    enddo
-
-  elseif(env_type .eq. "prod-gauss") then
-
-    do i = 1, elec_num
-      tmp = 1.d0
-      !DIR$ LOOP COUNT (100)
-      do iA = 1, nucl_num
-        a   = env_expo(iA)
-        riA = nucl_elec_dist(iA,i)
-        tmp = tmp * (1.d0 - dexp(-a*riA*riA))
-      enddo
-      vi_env(i) = tmp
-    enddo
-
-  elseif(env_type .eq. "sum-gauss") then
-
-    do i = 1, elec_num
-      tmp = 1.d0
-      !DIR$ LOOP COUNT (100)
-      do iA = 1, nucl_num
-        a   = env_expo(iA)
-        c   = env_coef(iA)
-        riA = nucl_elec_dist(iA,i)
-        tmp = tmp - c * dexp(-a*riA*riA)
-      enddo
-      vi_env(i) = tmp
-    enddo
-
-  elseif(env_type .eq. "sum-quartic") then
-
-    do i = 1, elec_num
-      tmp = 1.d0
-      !DIR$ LOOP COUNT (100)
-      do iA = 1, nucl_num
-        a   = env_expo(iA)
-        c   = env_coef(iA)
-        riA = nucl_elec_dist(iA,i)
-        tmp = tmp - c * dexp(-a*riA*riA*riA*riA)
-      enddo
-      vi_env(i) = tmp
-    enddo
-
-  else
-
-    print *, ' Error in vi_env: Unknown env_type = ', env_type
-    stop
-
-  endif
-
-END_PROVIDER
-
-! ---
-
- BEGIN_PROVIDER [double precision, deriv_env_x, (elec_num_8)]
-&BEGIN_PROVIDER [double precision, deriv_env_y, (elec_num_8)]
-&BEGIN_PROVIDER [double precision, deriv_env_z, (elec_num_8)]
-&BEGIN_PROVIDER [double precision,    lapl_env, (elec_num_8)]
-
-  implicit none
-  integer          :: i, ii, iA, phase, b
-  double precision :: a, riA, dx, dy, dz, r2, r4
-  double precision :: tmp, tmpx, tmpy, tmpz, tmpl
-  double precision :: expo, coef, coef_x, coef_y, coef_z, c
-  double precision :: arg
-
-  if(env_type .eq. "none") then
-
-    deriv_env_x = 0.d0
-    deriv_env_y = 0.d0
-    deriv_env_z = 0.d0
-    lapl_env    = 0.d0
-
-  elseif(env_type .eq. "sum-slat") then
-
-    do i = 1, elec_num
-      tmpx = 0.d0
-      tmpy = 0.d0
-      tmpz = 0.d0
-      tmpl = 0.d0
-      !DIR$ LOOP COUNT (100)
-      do iA = 1, nucl_num
-        a = env_expo(iA)
-        c = env_coef(iA)
-        ! xi - xA = nucl_elec_dist_vec(1,iA,i)
-        dx  = nucl_elec_dist_vec(1,iA,i)
-        dy  = nucl_elec_dist_vec(2,iA,i)
-        dz  = nucl_elec_dist_vec(3,iA,i)
-        riA = nucl_elec_dist(iA,i)
-        tmp = a * c * dexp(-a*riA) / riA
-        tmpx = tmpx + tmp * dx
-        tmpy = tmpy + tmp * dy
-        tmpz = tmpz + tmp * dz
-        tmpl = tmpl + tmp * (2.d0 - a*riA)
-      enddo
-      deriv_env_x(i) = tmpx
-      deriv_env_y(i) = tmpy
-      deriv_env_z(i) = tmpz
-      lapl_env   (i) = tmpl
-    enddo
-
-  elseif(env_type .eq. "prod-gauss") then
-
-    do i = 1, elec_num
-      deriv_env_x(i) = 0.d0
-      deriv_env_y(i) = 0.d0
-      deriv_env_z(i) = 0.d0
-      lapl_env   (i) = 0.d0
-      do ii = 1, List_all_comb_b2_size
-        phase  = 0
-        expo   = 0.d0
-        coef   = 0.d0
-        coef_x = 0.d0
-        coef_y = 0.d0
-        coef_z = 0.d0
-        !DIR$ LOOP COUNT (100)
-        do iA = 1, nucl_num
-          a   = env_expo(iA)
-          b   = List_all_comb_b2(iA,ii)
-          c   = dble(b) * a
-          riA = nucl_elec_dist(iA,i)
-          phase  += b
-          coef   += c
-          expo   += c * riA * riA
-          ! xi - xA = nucl_elec_dist_vec(1,iA,i)
-          coef_x += c * nucl_elec_dist_vec(1,iA,i)
-          coef_y += c * nucl_elec_dist_vec(2,iA,i)
-          coef_z += c * nucl_elec_dist_vec(3,iA,i)
-        enddo
-        tmp = -2.d0 * (-1.d0)**dble(phase) * dexp(-expo)
-        deriv_env_x(i) += tmp * coef_x
-        deriv_env_y(i) += tmp * coef_y
-        deriv_env_z(i) += tmp * coef_z
-        lapl_env   (i) += tmp * (3.d0 * coef - 2.d0 * (coef_x*coef_x + coef_y*coef_y + coef_z*coef_z))
-      enddo
-    enddo
-
-  elseif(env_type .eq. "sum-gauss") then
-
-    do i = 1, elec_num
-      tmpx = 0.d0
-      tmpy = 0.d0
-      tmpz = 0.d0
-      tmpl = 0.d0
-      !DIR$ LOOP COUNT (100)
-      do iA = 1, nucl_num
-        a = env_expo(iA)
-        c = env_coef(iA)
-        ! xi - xA = nucl_elec_dist_vec(1,iA,i)
-        dx  = nucl_elec_dist_vec(1,iA,i)
-        dy  = nucl_elec_dist_vec(2,iA,i)
-        dz  = nucl_elec_dist_vec(3,iA,i)
-        riA = nucl_elec_dist(iA,i)
-        arg = a * riA * riA
-        tmp = a * c * dexp(-arg)
-        tmpx = tmpx + tmp * dx
-        tmpy = tmpy + tmp * dy
-        tmpz = tmpz + tmp * dz
-        tmpl = tmpl + tmp * (3.d0 - 2.d0 * arg)
-      enddo
-      deriv_env_x(i) = 2.d0 * tmpx
-      deriv_env_y(i) = 2.d0 * tmpy
-      deriv_env_z(i) = 2.d0 * tmpz
-      lapl_env   (i) = 2.d0 * tmpl
-    enddo
-
-  elseif(env_type .eq. "sum-quartic") then
-
-    do i = 1, elec_num
-      tmpx = 0.d0
-      tmpy = 0.d0
-      tmpz = 0.d0
-      tmpl = 0.d0
-      !DIR$ LOOP COUNT (100)
-      do iA = 1, nucl_num
-        a = env_expo(iA)
-        c = env_coef(iA)
-        ! xi - xA = nucl_elec_dist_vec(1,iA,i)
-        dx  = nucl_elec_dist_vec(1,iA,i)
-        dy  = nucl_elec_dist_vec(2,iA,i)
-        dz  = nucl_elec_dist_vec(3,iA,i)
-        riA = nucl_elec_dist(iA,i)
-        r2  = riA * riA
-        r4  = r2  * r2
-        tmp = a * c * r2 * dexp(-a*r4)
-        tmpx = tmpx + tmp * dx
-        tmpy = tmpy + tmp * dy
-        tmpz = tmpz + tmp * dz
-        tmpl = tmpl + tmp * (5.d0 - 4.d0*a*r4)
-      enddo
-      deriv_env_x(i) = 4.d0 * tmpx
-      deriv_env_y(i) = 4.d0 * tmpy
-      deriv_env_z(i) = 4.d0 * tmpz
-      lapl_env   (i) = 4.d0 * tmpl
-    enddo
-
-  else
-
-    print *, ' Error in deriv_env & lapl_env: Unknown env_type = ', env_type
-    stop
-
   endif
 
 END_PROVIDER
@@ -453,12 +221,16 @@ END_PROVIDER
   implicit none
   integer          :: i, j
   double precision :: mu_div_sqrtpi, mu_sqrtpi_inv, rij, mu_rij
-  double precision :: tmp0_ij, tmp1_ij, tmp2_ij, tmp3_ij
+  double precision :: tmp0_ij, tmp1_ij, tmp2_ij, tmp3_ij, tmp
   double precision :: vj_lapl_uij, vj_derivx_uij, vj_derivy_uij, vj_derivz_uij, vj_uij
 
   mu_div_sqrtpi = mu_erf / dsqpi
 
-  if(env_type .eq. "none") then
+  grad_j_mu_x = 0.d0
+  grad_j_mu_y = 0.d0
+  grad_j_mu_z = 0.d0
+
+  if(env_type .eq. "None") then
 
     do i = 1, elec_num
       do j = 1, elec_num

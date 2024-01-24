@@ -103,7 +103,7 @@ END_PROVIDER
 
 ! ---
 
-BEGIN_PROVIDER [ double precision, psi_lapl, (elec_num_8) ]
+BEGIN_PROVIDER [double precision, psi_lapl, (elec_num_8)]
 
   BEGIN_DOC
   ! Laplacian of the wave function
@@ -197,7 +197,7 @@ END_PROVIDER
 
 ! ---
 
-BEGIN_PROVIDER [ double precision, psi_lapl_psi_inv, (elec_num_8) ]
+BEGIN_PROVIDER [double precision, psi_lapl_psi_inv, (elec_num_8)]
 
   BEGIN_DOC
   ! (Laplacian psi) / psi
@@ -210,6 +210,27 @@ BEGIN_PROVIDER [ double precision, psi_lapl_psi_inv, (elec_num_8) ]
   !DIR$ LOOP COUNT (100)
   do j = 1, elec_num
     psi_lapl_psi_inv(j) = psi_lapl(j) * psi_value_inv
+  enddo
+
+END_PROVIDER
+
+! ---
+
+BEGIN_PROVIDER [double precision, psi_lapl_psi_inv_ipp, (elec_num_8)]
+  
+  implicit none
+  integer          :: i, j
+  double precision :: tmpx, tmpy, tmpz
+
+  !DIR$ VECTOR ALIGNED
+  !DIR$ LOOP COUNT (100)
+  do j = 1, elec_num
+
+    tmpx = psidet_right_grad_lapl(1,j) / psidet_right_value
+    tmpy = psidet_right_grad_lapl(2,j) / psidet_right_value
+    tmpz = psidet_right_grad_lapl(3,j) / psidet_right_value
+
+    psi_lapl_psi_inv_ipp(j) = jast_lapl_jast_inv(j) - (tmpx*tmpx + tmpy*tmpy + tmpz*tmpz)
   enddo
 
 END_PROVIDER

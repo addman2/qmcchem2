@@ -29,6 +29,7 @@ Simple ;;
 Mu     ;;
 Mur    ;;
 Qmckl  ;;
+Boys   ;;
 END_TEMPLATE
 
      if (ifirst == 0) then
@@ -90,6 +91,7 @@ Simple ;;
 Mu     ;;
 Mur    ;;
 Qmckl  ;;
+Boys   ;;
 END_TEMPLATE
 
    !DIR$ VECTOR ALIGNED
@@ -145,6 +147,7 @@ END_PROVIDER
 !Mu     ;;
 !Mur    ;;
 !Qmckl  ;;
+!Boys   ;;
 !END_TEMPLATE
 !
 !   !DIR$ VECTOR ALIGNED
@@ -158,7 +161,7 @@ END_PROVIDER
 
 ! ---
 
-BEGIN_PROVIDER [ double precision, jast_lapl_jast_inv, (elec_num) ]
+BEGIN_PROVIDER [double precision, jast_lapl_jast_inv, (elec_num)]
 
   BEGIN_DOC
   !
@@ -198,6 +201,7 @@ Simple ;;
 Mu     ;;
 Mur    ;;
 Qmckl  ;;
+Boys   ;;
 END_TEMPLATE
 
   endif
@@ -243,6 +247,7 @@ Simple ;;
 Mu     ;;
 Mur    ;;
 Qmckl  ;;
+Boys   ;;
 END_TEMPLATE
 
   endif
