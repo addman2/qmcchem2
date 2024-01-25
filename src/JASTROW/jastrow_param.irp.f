@@ -196,25 +196,19 @@ BEGIN_PROVIDER [real, j1e_expo, (j1e_size,nucl_num)]
 END_PROVIDER
 
 BEGIN_PROVIDER [real, j1e_coef_ao, (ao_num)]
-
   implicit none
   integer :: i
-
   include '../types.F'
-
   j1e_coef_ao = 0.0
-
   call get_jastrow_j1e_coef_ao(j1e_coef_ao)
+END_PROVIDER
 
-  do i = 1, ao_num
-
-    if(abs(j1e_coef_ao(i)) .lt. 1e-7) then
-
-      j1e_coef_ao(i) = 0.0
-
-    endif
-  enddo
-
+BEGIN_PROVIDER [real, j1e_coef_ao2, (ao_num,ao_num)]
+  implicit none
+  integer :: i
+  include '../types.F'
+  j1e_coef_ao2 = 0.0
+  call get_jastrow_j1e_coef_ao2(j1e_coef_ao2)
 END_PROVIDER
 
 ! ---

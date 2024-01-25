@@ -22,6 +22,7 @@ data = [ \
 ("jastrow_j1e_type"                , "character*(32)", ""                   ),
 ("jastrow_j1e_size"                , "integer"       , ""                   ),
 ("jastrow_j1e_coef_ao"             , "real"          , "(ao_num)"           ),
+("jastrow_j1e_coef_ao2"            , "real"          , "(ao_num,ao_num)"    ),
 ("jastrow_j1e_coef"                , "real"          , "(j1e_size,nucl_num)"),
 ("jastrow_j1e_expo"                , "real"          , "(j1e_size,nucl_num)"),
 ("jastrow_j2e_type"                , "character*(32)", ""                   ),

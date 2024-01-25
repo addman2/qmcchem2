@@ -10,10 +10,13 @@
   include '../constants.F'
 
   implicit none
-  integer          :: i, j, p, iA
+  integer          :: i, j, k, p, iA
   real             :: r(3), ao_val, ao_der(3), ao_lap
-  double precision :: c, a, dx, dy, dz, riA, riA2, tmp1, tmp2
+  double precision :: c, ckj, a, dx, dy, dz, riA, riA2, tmp1, tmp2
   double precision :: tmp_x, tmp_y, tmp_z, g, f
+  double precision :: aok_v, aok_gx, aok_gy, aok_gz, aok_l
+  double precision :: aoj_v, aoj_gx, aoj_gy, aoj_gz, aoj_l
+
 
   PROVIDE j1e_type
 
@@ -67,34 +70,6 @@
 
   elseif(j1e_type .eq. "Charge_Harmonizer_AO") then
 
-    !do i = 1, elec_num
-
-    !  r(1) = elec_coord_transp(1,i)
-    !  r(2) = elec_coord_transp(2,i)
-    !  r(3) = elec_coord_transp(3,i)
-
-    !  tmp1  = 0.d0
-    !  tmp_x = 0.d0
-    !  tmp_y = 0.d0
-    !  tmp_z = 0.d0
-    !  tmp2  = 0.d0
-    !  do j = 1, ao_num
-    !    c = j1e_coef_ao(j)
-    !    call get_ao_val_der_lap(j, r, ao_val, ao_der, ao_lap)
-    !    tmp1  = tmp1  + c * dble(ao_val   )  
-    !    tmp_x = tmp_x + c * dble(ao_der(1))
-    !    tmp_y = tmp_y + c * dble(ao_der(2))
-    !    tmp_z = tmp_z + c * dble(ao_der(3))
-    !    tmp2  = tmp2  + c * dble(ao_lap   )
-    !  enddo
-
-    !  jast_elec_1e_value (i) = tmp1
-    !  jast_elec_1e_grad_x(i) = tmp_x 
-    !  jast_elec_1e_grad_y(i) = tmp_y 
-    !  jast_elec_1e_grad_z(i) = tmp_z 
-    !  jast_elec_1e_lapl  (i) = tmp2
-    !enddo
-
     PROVIDE qmckl_ao_vgl
     do i = 1, elec_num
 
@@ -103,13 +78,28 @@
       tmp_y = 0.d0
       tmp_z = 0.d0
       tmp2  = 0.d0
-      do j = 1, ao_num
-        c = j1e_coef_ao(j)
-        tmp1  = tmp1  + c * qmckl_ao_vgl(j,1,i)
-        tmp_x = tmp_x + c * qmckl_ao_vgl(j,2,i)
-        tmp_y = tmp_y + c * qmckl_ao_vgl(j,3,i)
-        tmp_z = tmp_z + c * qmckl_ao_vgl(j,4,i)
-        tmp2  = tmp2  + c * qmckl_ao_vgl(j,5,i)
+      do k = 1, ao_num
+        aok_v  = qmckl_ao_vgl(k,1,i)
+        aok_gx = qmckl_ao_vgl(k,2,i)
+        aok_gy = qmckl_ao_vgl(k,3,i)
+        aok_gz = qmckl_ao_vgl(k,4,i)
+        aok_l  = qmckl_ao_vgl(k,5,i)
+
+        do j = 1, ao_num
+          aoj_v  = qmckl_ao_vgl(j,1,i)
+          aoj_gx = qmckl_ao_vgl(j,2,i)
+          aoj_gy = qmckl_ao_vgl(j,3,i)
+          aoj_gz = qmckl_ao_vgl(j,4,i)
+          aoj_l  = qmckl_ao_vgl(j,5,i)
+
+          ckj = j1e_coef_ao2(j,k)
+
+          tmp1  = tmp1  + ckj *  aok_v * aoj_v
+          tmp_x = tmp_x + ckj * (aok_v * aoj_gx + aok_gx * aoj_v)
+          tmp_y = tmp_y + ckj * (aok_v * aoj_gy + aok_gy * aoj_v)
+          tmp_z = tmp_z + ckj * (aok_v * aoj_gz + aok_gz * aoj_v)
+          tmp2  = tmp2  + ckj * (aok_v * aoj_l  + aok_l  * aoj_v + 2.d0 * (aok_gx*aoj_gx + aok_gy*aoj_gy + aok_gz*aoj_gz))
+        enddo
       enddo
 
       jast_elec_1e_value (i) = tmp1
