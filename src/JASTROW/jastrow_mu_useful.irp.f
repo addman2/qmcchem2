@@ -221,4 +221,92 @@ END_PROVIDER
 
 ! ---
 
+subroutine get_jmu_val_r1(i, mu, e_num, jval)
+
+  BEGIN_DOC  
+  !
+  ! u(i,j) = 0.5 [rij (1 - erf(mu rij)) - exp(-(mu rij)**2)/(pi**0.5 mu)] 
+  !
+  END_DOC
+
+  include '../constants.F'
+
+  implicit none
+  integer,          intent(in)  :: i, e_num
+  double precision, intent(in)  :: mu
+  double precision, intent(out) :: jval(e_num)
+
+  integer                       :: j
+  double precision              :: rij, mu_rij, mu_pi
+
+  mu_pi = 1.d0 / (dsqpi * mu)
+
+  do j = 1, e_num
+
+    if(j == i) then
+      jval(j) = 0.d0
+    endif
+
+    rij    = elec_dist(j,i)
+    mu_rij = mu * rij
+
+    jval(j) = 0.5d0 * (rij * (1.d0 - derf(mu_rij)) - mu_pi * dexp(-mu_rij*mu_rij))
+  enddo
+
+end
+
+! ---
+
+subroutine get_jmu_der_lap_r1(i, mu, e_num, jderx, jdery, jderz, jlapl)
+
+  BEGIN_DOC  
+  !
+  ! d/dxi u(i,j) = 0.5 [(1 - erf(mu rij)) / rij] * (xi - xj)
+  ! d/dyi u(i,j) = 0.5 [(1 - erf(mu rij)) / rij] * (yi - yj)
+  ! d/dzi u(i,j) = 0.5 [(1 - erf(mu rij)) / rij] * (zi - zj)
+  !
+  ! \Delta_i u(i,j) = (1 - erf(mu rij)) / rij - mu exp[-(mu rij)^2] / sqrt(pi)
+  !
+  END_DOC
+
+  include '../constants.F'
+
+  implicit none
+  integer,          intent(in)  :: i, e_num
+  double precision, intent(in)  :: mu
+  double precision, intent(out) :: jderx(e_num), jdery(e_num), jderz(e_num), jlapl(e_num)
+
+  integer                       :: j
+  double precision              :: rij, mu_rij, mu_div_sqrtpi
+  double precision              :: tmp0_ij, tmp1_ij, tmp2_ij, tmp3_ij
+
+  mu_div_sqrtpi = mu / dsqpi
+
+  do j = 1, e_num
+
+    if(j == i) then
+      jderx(j) = 0.d0
+      jdery(j) = 0.d0 
+      jderz(j) = 0.d0 
+      jlapl(j) = 0.d0
+    endif
+
+    rij    = elec_dist(j,i)
+    mu_rij = mu * rij
+
+    tmp0_ij = dexp(-mu_rij * mu_rij)
+
+    tmp1_ij = 1.d0 - derf(mu_rij)
+    tmp2_ij = tmp1_ij * elec_dist_inv(j,i)
+    tmp3_ij = -0.5d0 * tmp2_ij
+
+    jderx(j) = tmp3_ij * elec_dist_vec_x(j,i)
+    jdery(j) = tmp3_ij * elec_dist_vec_y(j,i)
+    jderz(j) = tmp3_ij * elec_dist_vec_z(j,i)
+    jlapl(j) = tmp2_ij - mu_div_sqrtpi * tmp0_ij
+  enddo
+
+end
+
+! ---
 

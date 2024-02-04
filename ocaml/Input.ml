@@ -775,7 +775,7 @@ end
 
 module Jastrow_type : sig
 
-  type t = None | Core | Simple | Mu | Mur | Qmckl | Boys
+  type t = None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys
   val doc : string
   val read  : unit -> t
   val write : t -> unit
@@ -784,8 +784,8 @@ module Jastrow_type : sig
 
 end = struct
 
-  type t = None | Core | Simple | Mu | Mur | Qmckl | Boys
-  let doc = "Type of Jastrow factor [ None | Core | Simple | Mu | Mur | Qmckl | Boys]"
+  type t = None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys
+  let doc = "Type of Jastrow factor [ None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys]"
 
   let of_string s =
     match String.capitalize_ascii (String.trim  s) with
@@ -793,16 +793,18 @@ end = struct
     | "Simple" -> Simple
     | "None" -> None
     | "Mu" -> Mu
+    | "Mu_Nu" -> Mu_Nu
     | "Mur" -> Mur
     | "Qmckl" -> Qmckl
     | "Boys" -> Boys
-    | _ -> failwith "j2e_type should be [ None | Core | Simple | Mu | Mur | Qmckl | Boys]"
+    | _ -> failwith "j2e_type should be [ None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys]"
 
 
   let to_string = function
   | Core -> "Core"
   | Simple -> "Simple"
   | Mu -> "Mu"
+  | Mu_Nu -> "Mu_Nu"
   | Mur -> "Mur"
   | None -> "None"
   | Qmckl -> "Qmckl"
@@ -832,7 +834,7 @@ end
 
 module Jpsi_type : sig
 
-  type t = None | Core | Simple | Mu | Mur | Qmckl | Boys
+  type t = None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys
   val doc : string
   val read  : unit -> t
   val write : t -> unit
@@ -841,8 +843,8 @@ module Jpsi_type : sig
 
 end = struct
 
-  type t = None | Core | Simple | Mu | Mur | Qmckl | Boys
-  let doc = "Type of Jpsi factor [ None | Core | Simple | Mu | Mur | Qmckl | Boys]"
+  type t = None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys
+  let doc = "Type of Jpsi factor [ None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys]"
 
   let of_string s = 
     match String.capitalize_ascii (String.trim  s) with
@@ -850,16 +852,18 @@ end = struct
     | "Simple" -> Simple
     | "None" -> None
     | "Mu" -> Mu
+    | "Mu_Nu" -> Mu_Nu
     | "Mur" -> Mur
     | "Qmckl" -> Qmckl
     | "Boys" -> Boys
-    | _ -> failwith "jpsi_type should be [ None | Core | Simple | Mu | Mur | Qmckl | Boys]"
+    | _ -> failwith "jpsi_type should be [ None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys]"
 
 
   let to_string = function
   | Core -> "Core"
   | Simple -> "Simple"
   | Mu -> "Mu"
+  | Mu_Nu -> "Mu_Nu"
   | Mur -> "Mur"
   | None -> "None"
   | Qmckl -> "Qmckl"

@@ -27,6 +27,7 @@ data = [ \
 ("jastrow_j1e_expo"                , "real"          , "(j1e_size,nucl_num)"),
 ("jastrow_j2e_type"                , "character*(32)", ""                   ),
 ("jastrow_env_type"                , "character*(32)", ""                   ),
+("jastrow_nu_erf"                  , "real"          , ""                   ),
 ("jastrow_a_boys"                  , "real"          , ""                   ),
 ("jastrow_env_expo"                , "real"          , "(nucl_num)"         ),
 ("jastrow_env_coef"                , "real"          , "(nucl_num)"         ),

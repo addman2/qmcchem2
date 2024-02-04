@@ -151,6 +151,7 @@ IRPSOURCES= \
   src/JASTROW/jastrow_full.irp.f \
   src/JASTROW/jastrow_1e.irp.f \
   src/JASTROW/jastrow_mu.irp.f \
+  src/JASTROW/jastrow_mu_nu.irp.f \
   src/JASTROW/jastrow_mu_useful.irp.f \
   src/JASTROW/jastrow_mur.irp.f \
   src/JASTROW/jastrow_qmckl.irp.f \

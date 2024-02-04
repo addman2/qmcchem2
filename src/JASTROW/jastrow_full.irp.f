@@ -27,6 +27,7 @@ SUBST [X]
 Core   ;;
 Simple ;;
 Mu     ;;
+Mu_Nu  ;;
 Mur    ;;
 Qmckl  ;;
 Boys   ;;
@@ -89,6 +90,7 @@ SUBST [ X ]
 Core   ;;
 Simple ;;
 Mu     ;;
+Mu_Nu  ;;
 Mur    ;;
 Qmckl  ;;
 Boys   ;;
@@ -145,6 +147,7 @@ END_PROVIDER
 !Core   ;;
 !Simple ;;
 !Mu     ;;
+!Mu_Nu  ;;
 !Mur    ;;
 !Qmckl  ;;
 !Boys   ;;
@@ -199,6 +202,7 @@ SUBST [X]
 Core   ;;
 Simple ;;
 Mu     ;;
+Mu_Nu  ;;
 Mur    ;;
 Qmckl  ;;
 Boys   ;;
@@ -245,6 +249,7 @@ SUBST [X]
 Core   ;;
 Simple ;;
 Mu     ;;
+Mu_Nu  ;;
 Mur    ;;
 Qmckl  ;;
 Boys   ;;

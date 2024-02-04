@@ -53,6 +53,8 @@ BEGIN_PROVIDER [integer, j2e_type]
     j2e_type = t_Core
   else if (buffer == types(t_Mu)) then
     j2e_type = t_Mu
+  else if (buffer == types(t_Mu_Nu)) then
+    j2e_type = t_Mu_Nu
   else if (buffer == types(t_Mur)) then
     j2e_type = t_Mur
     print*, ' do not forget to increase the block time'
@@ -91,6 +93,8 @@ BEGIN_PROVIDER [integer, jpsi_type]
     jpsi_type = t_Core
   else if (buffer == types(t_Mu)) then
     jpsi_type = t_Mu
+  else if (buffer == types(t_Mu_Nu)) then
+    jpsi_type = t_Mu_Nu
   else if (buffer == types(t_Mur)) then
     jpsi_type = t_Mur
     print*, ' do not forget to increase the block time'
@@ -99,7 +103,7 @@ BEGIN_PROVIDER [integer, jpsi_type]
   else if (buffer == types(t_Boys)) then
     jpsi_type = t_Boys
   else
-    call abrt(irp_here, 'jpsi type should be (None|Simple|Core|Mu|Mu_r|Qmckl|Boys)')
+    call abrt(irp_here, 'jpsi type should be (None|Simple|Core|Mu|Mu_Nu|Mu_r|Qmckl|Boys)')
   endif
   call cinfo(irp_here, 'jpsi_type',buffer)
 
@@ -120,6 +124,12 @@ BEGIN_PROVIDER [real, mu_erf]
   implicit none
   mu_erf = 0.5
   call get_hamiltonian_mu_erf(mu_erf)
+END_PROVIDER
+
+BEGIN_PROVIDER [real, nu_erf]
+  implicit none
+  nu_erf = 1.0
+  call get_jastrow_nu_erf(nu_erf)
 END_PROVIDER
 
 BEGIN_PROVIDER [real, a_boys]
