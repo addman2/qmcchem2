@@ -30,13 +30,14 @@ BEGIN_TEMPLATE
       enddo
     endif
 SUBST [X]
-Core   ;;
-Simple ;;
-Mu     ;;
-Mu_Nu  ;;
-Mur    ;;
-Qmckl  ;;
-Boys   ;;
+Core       ;;
+Simple     ;;
+Mu         ;;
+Mu_Nu      ;;
+Mur        ;;
+Qmckl      ;;
+Boys       ;;
+Boys_Handy ;;
 END_TEMPLATE
 
     if (ifirst == 0) then
@@ -99,13 +100,14 @@ BEGIN_TEMPLATE
       enddo
     endif
 SUBST [ X ]
-Core   ;;
-Simple ;;
-Mu     ;;
-Mu_Nu  ;;
-Mur    ;;
-Qmckl  ;;
-Boys   ;;
+Core       ;;
+Simple     ;;
+Mu         ;;
+Mu_Nu      ;;
+Mur        ;;
+Qmckl      ;;
+Boys       ;;
+Boys_Handy ;;
 END_TEMPLATE
 
     !DIR$ VECTOR ALIGNED
@@ -156,13 +158,14 @@ BEGIN_TEMPLATE
       enddo
     endif
 SUBST [X]
-Core   ;;
-Simple ;;
-Mu     ;;
-Mu_Nu  ;;
-Mur    ;;
-Qmckl  ;;
-Boys   ;;
+Core       ;;
+Simple     ;;
+Mu         ;;
+Mu_Nu      ;;
+Mur        ;;
+Qmckl      ;;
+Boys       ;;
+Boys_Handy ;;
 END_TEMPLATE
 
     !DIR$ VECTOR ALIGNED
@@ -206,13 +209,14 @@ BEGIN_TEMPLATE
       enddo
     endif
 SUBST [X]
-Core   ;;
-Simple ;;
-Mu     ;;
-Mu_Nu  ;;
-Mur    ;;
-Qmckl  ;;
-Boys   ;;
+Core       ;;
+Simple     ;;
+Mu         ;;
+Mu_Nu      ;;
+Mur        ;;
+Qmckl      ;;
+Boys       ;;
+Boys_Handy ;;
 END_TEMPLATE
 
 !   print *, jast_elec_Jpsi_lapl(1) , jast_elec_Qmckl_lapl(1)

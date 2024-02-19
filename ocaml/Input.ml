@@ -775,7 +775,7 @@ end
 
 module Jastrow_type : sig
 
-  type t = None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys
+  type t = None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys | Boys_Handy
   val doc : string
   val read  : unit -> t
   val write : t -> unit
@@ -784,8 +784,8 @@ module Jastrow_type : sig
 
 end = struct
 
-  type t = None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys
-  let doc = "Type of Jastrow factor [ None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys]"
+  type t = None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys | Boys_Handy
+  let doc = "Type of Jastrow factor [ None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys | Boys_Handy]"
 
   let of_string s =
     match String.capitalize_ascii (String.trim  s) with
@@ -797,7 +797,8 @@ end = struct
     | "Mur" -> Mur
     | "Qmckl" -> Qmckl
     | "Boys" -> Boys
-    | _ -> failwith "j2e_type should be [ None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys]"
+    | "Boys_Handy" -> Boys_Handy
+    | _ -> failwith "j2e_type should be [ None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys | Boys_Handy]"
 
 
   let to_string = function
@@ -809,6 +810,7 @@ end = struct
   | None -> "None"
   | Qmckl -> "Qmckl"
   | Boys -> "Boys"
+  | Boys_Handy -> "Boys_Handy"
 
 
   let read () =
@@ -834,7 +836,7 @@ end
 
 module Jpsi_type : sig
 
-  type t = None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys
+  type t = None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys | Boys_Handy
   val doc : string
   val read  : unit -> t
   val write : t -> unit
@@ -843,8 +845,8 @@ module Jpsi_type : sig
 
 end = struct
 
-  type t = None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys
-  let doc = "Type of Jpsi factor [ None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys]"
+  type t = None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys | Boys_Handy
+  let doc = "Type of Jpsi factor [ None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys | Boys_Handy]"
 
   let of_string s = 
     match String.capitalize_ascii (String.trim  s) with
@@ -856,7 +858,8 @@ end = struct
     | "Mur" -> Mur
     | "Qmckl" -> Qmckl
     | "Boys" -> Boys
-    | _ -> failwith "jpsi_type should be [ None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys]"
+    | "Boys_Handy" -> Boys_Handy
+    | _ -> failwith "jpsi_type should be [ None | Core | Simple | Mu | Mu_Nu | Mur | Qmckl | Boys | Boys_Handy]"
 
 
   let to_string = function
@@ -868,6 +871,7 @@ end = struct
   | None -> "None"
   | Qmckl -> "Qmckl"
   | Boys -> "Boys"
+  | Boys_Handy -> "Boys_Handy"
 
 
   let read () = 

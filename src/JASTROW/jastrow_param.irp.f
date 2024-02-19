@@ -1,7 +1,7 @@
 ! Input data
 ! ----------
 
-BEGIN_PROVIDER  [logical, do_jast]
+BEGIN_PROVIDER [logical, do_jast]
 
   BEGIN_DOC  
   ! If true, compute the Jastrow factor
@@ -16,7 +16,7 @@ END_PROVIDER
 
 ! ---
 
-BEGIN_PROVIDER  [logical, do_jpsi]
+BEGIN_PROVIDER [logical, do_jpsi]
 
   BEGIN_DOC  
   ! If true, add Jastrow factor to WF
@@ -62,8 +62,10 @@ BEGIN_PROVIDER [integer, j2e_type]
     j2e_type = t_Qmckl
   else if (buffer == types(t_Boys)) then
     j2e_type = t_Boys
+  else if (buffer == types(t_Boys_Handy)) then
+    j2e_type = t_Boys_Handy
   else
-    call abrt(irp_here, 'j2e_type should be (None|Simple|Core|Mu|Mu_r|Qmckl|Boys)')
+    call abrt(irp_here, 'j2e_type should be (None|Simple|Core|Mu|Mu_r|Qmckl|Boys|Boys_Handy)')
   endif
   call cinfo(irp_here, 'j2e_type', buffer)
 
@@ -102,14 +104,14 @@ BEGIN_PROVIDER [integer, jpsi_type]
     jpsi_type = t_Qmckl
   else if (buffer == types(t_Boys)) then
     jpsi_type = t_Boys
+  else if (buffer == types(t_Boys_Handy)) then
+    jpsi_type = t_Boys_Handy
   else
-    call abrt(irp_here, 'jpsi type should be (None|Simple|Core|Mu|Mu_Nu|Mu_r|Qmckl|Boys)')
+    call abrt(irp_here, 'jpsi type should be (None|Simple|Core|Mu|Mu_Nu|Mu_r|Qmckl|Boys|Boys_Handy)')
   endif
   call cinfo(irp_here, 'jpsi_type',buffer)
 
 END_PROVIDER
-
-! ---
 
 ! ---
 
@@ -191,14 +193,14 @@ BEGIN_PROVIDER [integer, j1e_size]
   call get_jastrow_j1e_size(j1e_size)
 END_PROVIDER
 
-BEGIN_PROVIDER [real, j1e_coef, (j1e_size,nucl_num)]
+BEGIN_PROVIDER [real, j1e_coef, (j1e_size, nucl_num)]
   implicit none
   include '../types.F'
   j1e_coef = 0.0
   call get_jastrow_j1e_coef(j1e_coef)
 END_PROVIDER
 
-BEGIN_PROVIDER [real, j1e_expo, (j1e_size,nucl_num)]
+BEGIN_PROVIDER [real, j1e_expo, (j1e_size, nucl_num)]
   implicit none
   include '../types.F'
   j1e_expo = 1.0
@@ -219,6 +221,57 @@ BEGIN_PROVIDER [real, j1e_coef_ao2, (ao_num,ao_num)]
   include '../types.F'
   j1e_coef_ao2 = 0.0
   call get_jastrow_j1e_coef_ao2(j1e_coef_ao2)
+END_PROVIDER
+
+! ---
+
+BEGIN_PROVIDER [integer, jbh_size]
+  implicit none
+  include '../types.F'
+  jbh_size = 1 ! nb of term per nuclei
+  call get_jastrow_jbh_size(jbh_size)
+END_PROVIDER
+
+BEGIN_PROVIDER [real, jbh_ee, (nucl_num)]
+  implicit none
+  include '../types.F'
+  jbh_ee = 1.0
+  call get_jastrow_jbh_ee(jbh_ee)
+END_PROVIDER
+
+BEGIN_PROVIDER [real, jbh_en, (nucl_num)]
+  implicit none
+  include '../types.F'
+  jbh_en = 1.0
+  call get_jastrow_jbh_en(jbh_en)
+END_PROVIDER
+
+BEGIN_PROVIDER [real, jbh_c, (jbh_size, nucl_num)]
+  implicit none
+  include '../types.F'
+  jbh_c = 0.0
+  call get_jastrow_jbh_c(jbh_c)
+END_PROVIDER
+
+BEGIN_PROVIDER [integer, jbh_m, (jbh_size, nucl_num)]
+  implicit none
+  include '../types.F'
+  jbh_m = 0
+  call get_jastrow_jbh_m(jbh_m)
+END_PROVIDER
+
+BEGIN_PROVIDER [integer, jbh_n, (jbh_size, nucl_num)]
+  implicit none
+  include '../types.F'
+  jbh_n = 0
+  call get_jastrow_jbh_n(jbh_n)
+END_PROVIDER
+
+BEGIN_PROVIDER [integer, jbh_o, (jbh_size, nucl_num)]
+  implicit none
+  include '../types.F'
+  jbh_o = 0
+  call get_jastrow_jbh_o(jbh_o)
 END_PROVIDER
 
 ! ---
