@@ -22,33 +22,33 @@ program qmcchem_info
 !  print *,  det_alpha_norm
 !  print *,  'Det beta norm:'
 !  print *,  det_beta_norm
-  call step1
+!  call step1
   call cpu_time (cpu0)
-  call step2(imax)
+!  call step2(imax)
   call cpu_time (cpu1)
   print *,  'Time for the calculation of E_loc (ms)   : ', 1000.*(cpu1-cpu0)/float(imax)
 end
 
-subroutine step1
-  implicit none
-  print *,  'E_loc                                    : ', E_loc
-  PROVIDE E_loc
-  if (calc_vec_hjsimple_m_hmu_no3b) then
-     print *, 'computing Vec_hjsimple_m_hmu_no3b'
-     PROVIDE Vec_hjsimple_m_hmu_no3b 
-  end if
-end
-
-subroutine step2(imax)
-  implicit none
-  integer, intent(in)            :: imax
-  integer                        :: i
-  do i=1,imax
-    PROVIDE E_loc
-    if (calc_vec_hjsimple_m_hmu_no3b) then
-      PROVIDE Vec_hjsimple_m_hmu_no3b 
-    end if
-
-    TOUCH elec_coord
-  enddo
-end
+!subroutine step1
+!  implicit none
+!  print *,  'E_loc                                    : ', E_loc
+!  PROVIDE E_loc
+!  if (calc_vec_hjsimple_m_hmu_no3b) then
+!     print *, 'computing Vec_hjsimple_m_hmu_no3b'
+!     PROVIDE Vec_hjsimple_m_hmu_no3b 
+!  end if
+!end
+!
+!subroutine step2(imax)
+!  implicit none
+!  integer, intent(in)            :: imax
+!  integer                        :: i
+!  do i=1,imax
+!    PROVIDE E_loc
+!    if (calc_vec_hjsimple_m_hmu_no3b) then
+!      PROVIDE Vec_hjsimple_m_hmu_no3b 
+!    end if
+!
+!    TOUCH elec_coord
+!  enddo
+!end

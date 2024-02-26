@@ -43,7 +43,7 @@
     endif
 
     ! Jastrow parameters
-    if (jast_type == t_Qmckl .or. jpsi_type == t_Qmckl) then
+    if(j2e_type == t_Qmckl .or. jpsi_type == t_Qmckl) then
 
        rc =  qmckl_set_jastrow_champ_spin_independent(qmckl_ctx, 1)
        call check_qmckl(rc, irp_here, qmckl_ctx)

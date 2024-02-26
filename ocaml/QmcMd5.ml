@@ -29,7 +29,7 @@ let files_to_track = [
   "electrons/elec_alpha_num" ;
   "electrons/elec_beta_num" ;
   "electrons/elec_walk_num" ;
-  "jastrow/jast_type" ;
+  "jastrow/j2e_type" ;
   "mo_basis/mo_coef.gz" ;
   "mo_basis/mo_tot_num" ;
   "nuclei/nucl_charge.gz" ;

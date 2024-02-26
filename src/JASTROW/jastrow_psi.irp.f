@@ -30,13 +30,14 @@ BEGIN_TEMPLATE
       enddo
     endif
 SUBST [X]
-Core   ;;
-Mu     ;;
-Mu_1b  ;;
-Muenv  ;;
-Mur    ;;
-Qmckl  ;;
-Simple ;;
+Core       ;;
+Simple     ;;
+Mu         ;;
+Mu_Nu      ;;
+Mur        ;;
+Qmckl      ;;
+Boys       ;;
+Boys_Handy ;;
 END_TEMPLATE
 
     if (ifirst == 0) then
@@ -99,13 +100,14 @@ BEGIN_TEMPLATE
       enddo
     endif
 SUBST [ X ]
-Core   ;;
-Mu     ;;
-Mu_1b  ;;
-Muenv  ;;
-Mur    ;;
-Qmckl  ;;
-Simple ;;
+Core       ;;
+Simple     ;;
+Mu         ;;
+Mu_Nu      ;;
+Mur        ;;
+Qmckl      ;;
+Boys       ;;
+Boys_Handy ;;
 END_TEMPLATE
 
     !DIR$ VECTOR ALIGNED
@@ -156,13 +158,14 @@ BEGIN_TEMPLATE
       enddo
     endif
 SUBST [X]
-Core   ;;
-Mu     ;;
-Mu_1b  ;;
-Muenv  ;;
-Mur    ;;
-Qmckl  ;;
-Simple ;;
+Core       ;;
+Simple     ;;
+Mu         ;;
+Mu_Nu      ;;
+Mur        ;;
+Qmckl      ;;
+Boys       ;;
+Boys_Handy ;;
 END_TEMPLATE
 
     !DIR$ VECTOR ALIGNED
@@ -206,13 +209,14 @@ BEGIN_TEMPLATE
       enddo
     endif
 SUBST [X]
-Core   ;;
-Mu     ;;
-Mu_1b  ;;
-Muenv  ;;
-Mur    ;;
-Qmckl  ;;
-Simple ;;
+Core       ;;
+Simple     ;;
+Mu         ;;
+Mu_Nu      ;;
+Mur        ;;
+Qmckl      ;;
+Boys       ;;
+Boys_Handy ;;
 END_TEMPLATE
 
 !   print *, jast_elec_Jpsi_lapl(1) , jast_elec_Qmckl_lapl(1)
@@ -223,7 +227,7 @@ END_PROVIDER
 
 ! ---
 
-BEGIN_PROVIDER [ double precision, deltaE_Jpsi_lapl ]
+BEGIN_PROVIDER [double precision, deltaE_Jpsi_lapl]
 
   implicit none
   integer          :: i
@@ -239,7 +243,7 @@ END_PROVIDER
 
 ! ---
 
-BEGIN_PROVIDER [ double precision, deltaE_Jpsi_nonh ]
+BEGIN_PROVIDER [double precision, deltaE_Jpsi_nonh]
 
   implicit none
   integer          :: i
@@ -257,7 +261,7 @@ END_PROVIDER
 
 ! ---
 
-BEGIN_PROVIDER [ double precision, deltaE_mJpsi_nonh ]
+BEGIN_PROVIDER [double precision, deltaE_mJpsi_nonh]
 
   implicit none
   integer          :: i
@@ -275,7 +279,7 @@ END_PROVIDER
 
 ! ---
 
-BEGIN_PROVIDER [ double precision, deltaE_Jpsi_grad ]
+BEGIN_PROVIDER [double precision, deltaE_Jpsi_grad]
 
   implicit none
   integer          :: i
@@ -293,4 +297,31 @@ END_PROVIDER
 
 ! ---
 
+BEGIN_PROVIDER [double precision, deltaE_Jpsi_grad_3b]
+
+  implicit none
+  integer :: i, j, k
+
+  deltaE_Jpsi_grad_3b = 0.d0
+  do i = 1, elec_num
+    do j = i+1, elec_num
+      do k = j+1, elec_num
+        deltaE_Jpsi_grad_3b -= grad_j_mu_x(i,j) * grad_j_mu_x(i,k)
+        deltaE_Jpsi_grad_3b -= grad_j_mu_y(i,j) * grad_j_mu_y(i,k)
+        deltaE_Jpsi_grad_3b -= grad_j_mu_z(i,j) * grad_j_mu_z(i,k)
+
+        deltaE_Jpsi_grad_3b -= grad_j_mu_x(j,i) * grad_j_mu_x(j,k)
+        deltaE_Jpsi_grad_3b -= grad_j_mu_y(j,i) * grad_j_mu_y(j,k)
+        deltaE_Jpsi_grad_3b -= grad_j_mu_z(j,i) * grad_j_mu_z(j,k)
+
+        deltaE_Jpsi_grad_3b -= grad_j_mu_x(k,i) * grad_j_mu_x(k,j)
+        deltaE_Jpsi_grad_3b -= grad_j_mu_y(k,i) * grad_j_mu_y(k,j)
+        deltaE_Jpsi_grad_3b -= grad_j_mu_z(k,i) * grad_j_mu_z(k,j)
+      enddo
+    enddo
+  enddo
+
+END_PROVIDER
+
+! ---
 

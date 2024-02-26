@@ -13,10 +13,19 @@ program print_Jast
   print *,  'Closed-shell MOs                         : ', mo_closed_num
   print *,  'Number of MOs in determinants            : ', num_present_mos
 
-  print *, ' jastrow mu     ', mu_erf
-  print *, ' jastrow 1b type', j1b_type
-  print *, ' jastrow 1b     ', j1b_pen, j1b_pen_coef, j1b_coeff
   print *, ' sign of jastrow', sgn_jast
+
+  print *, ' j2e_type = ', j2e_type
+  print *, ' mu_erf = ', mu_erf
+
+  print *, ' j1e_type = ', j1e_type
+  print *, ' j1e_coef = ', j1e_coef
+  print *, ' j1e_expo = ', j1e_expo
+
+  print *, ' env_type', env_type
+  print *, ' env_ceof = ', env_coef
+  print *, ' env_expo = ', env_expo
+
 
   print *, ' jastrow value:'
   print *, jast_value, jast_value_inv
@@ -148,11 +157,10 @@ program print_Jast
 !  ! ---
 
 
-  print*, ' jast_type', jast_type
-  if(jast_type .eq. t_Muenv) then
-    call check_Muenv_grad()
-    call check_Muenv_lapl()
-  elseif(jast_type .eq. t_Mur) then
+  if(j2e_type .eq. t_Mu) then
+    call check_Mu_grad()
+    call check_Mu_lapl()
+  elseif(j2e_type .eq. t_Mur) then
     !call debug_hf_density()
     call check_Mur_grad()
     call check_Mur_lapl()
@@ -219,7 +227,7 @@ subroutine check_$X_grad()
   print *, ' norm     =', norm
   print *, ' '
 
-end subroutine check_$X_grad
+end
 
 subroutine check_$X_lapl()
 
@@ -259,10 +267,10 @@ subroutine check_$X_lapl()
   print *, ' norm     =', norm
   print *, ' '
 
-end subroutine check_$X_lapl
+end
 SUBST [X]
-Muenv ;;
-Mur   ;;
+Mu  ;;
+Mur ;;
 END_TEMPLATE
 
 
@@ -349,6 +357,6 @@ subroutine debug_hf_density()
   print *, ' norm     =', norm
 
   return
-end subroutine debug_hf_density
+end
 
 

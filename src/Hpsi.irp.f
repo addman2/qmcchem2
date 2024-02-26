@@ -61,7 +61,7 @@ END_PROVIDER
 
 ! ---
 
-BEGIN_PROVIDER [ double precision, jast_lapl_jast_inv_tot]
+BEGIN_PROVIDER [double precision, jast_lapl_jast_inv_tot]
 
   BEGIN_DOC
   ! (Lapl J)/J

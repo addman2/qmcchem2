@@ -246,7 +246,7 @@ END_PROVIDER
 
 ! ---
 
-BEGIN_PROVIDER [ double precision, E_kin_elec, (elec_num) ]
+BEGIN_PROVIDER [double precision, E_kin_elec, (elec_num)]
 
   BEGIN_DOC
   ! Electronic Kinetic energy : -1/2 (Lapl.Psi)/Psi
@@ -257,6 +257,19 @@ BEGIN_PROVIDER [ double precision, E_kin_elec, (elec_num) ]
 
   do i = 1, elec_num
     E_kin_elec(i) = -0.5d0 * psi_lapl_psi_inv(i)
+  enddo
+
+END_PROVIDER
+
+! ---
+
+BEGIN_PROVIDER [double precision, E_kin_elec_ipp, (elec_num)]
+
+  implicit none
+  integer :: i
+
+  do i = 1, elec_num
+    E_kin_elec_ipp(i) = -0.5d0 * psi_lapl_psi_inv_ipp(i)
   enddo
 
 END_PROVIDER
@@ -383,7 +396,7 @@ END_PROVIDER
 
 ! ---
 
-BEGIN_PROVIDER  [ double precision, E_loc ]
+BEGIN_PROVIDER [double precision, E_loc]
 
   BEGIN_DOC
   ! Local energy : E_kin + E_pot + E_nucl
@@ -408,9 +421,30 @@ BEGIN_PROVIDER  [ double precision, E_loc ]
 !    E_loc = E_ref + delta_e * dexp(-dabs(delta_e)*time_step)
 !  endif
 
-  E_loc_min = min(E_loc,E_loc_min)
-  E_loc_max = max(E_loc,E_loc_max)
+  E_loc_min = min(E_loc, E_loc_min)
+  E_loc_max = max(E_loc, E_loc_max)
   SOFT_TOUCH E_loc_min E_loc_max
+END_PROVIDER
+
+! ---
+
+BEGIN_PROVIDER [double precision, E_loc_ipp]
+
+  include '../types.F'
+
+  implicit none
+  integer :: i
+
+  E_loc_ipp = E_nucl
+  !DIR$ VECTOR ALIGNED
+  !DIR$ LOOP COUNT(200)
+  do i = 1, elec_num
+    E_loc_ipp += E_kin_elec_ipp(i) + E_pot_elec(i)
+  enddo
+
+  E_loc_ipp_min = min(E_loc_ipp, E_loc_ipp_min)
+  E_loc_ipp_max = max(E_loc_ipp, E_loc_ipp_max)
+  SOFT_TOUCH E_loc_ipp_min E_loc_ipp_max
 END_PROVIDER
 
 ! ---

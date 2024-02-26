@@ -80,7 +80,7 @@ subroutine rho_hf_val_der_lap(r, rho_val, rho_der, rho_lap)
   !print*, rho_lap
 
   return
-end subroutine rho_hf_val_der_lap
+end
 
 ! ---
 
@@ -121,7 +121,7 @@ subroutine get_mo_val_der_lap(i, r, mo_val, mo_der, mo_lap)
 
   return
 
-end subroutine get_mo_val_der_lap
+end
 
 ! ---
 

@@ -15,22 +15,23 @@
  if (do_jast) then
 
 BEGIN_TEMPLATE
-     if (jast_type == t_$X) then
-       argexpo = 0.d0
-       !DIR$ VECTOR ALIGNED
-       !DIR$ LOOP COUNT (200)
-       do i = 1, elec_num
-         argexpo += jast_elec_$X_value(i)
-       enddo
-     endif
+   if (j2e_type == t_$X) then
+     argexpo = 0.d0
+     !DIR$ VECTOR ALIGNED
+     !DIR$ LOOP COUNT (200)
+     do i = 1, elec_num
+       argexpo += jast_elec_$X_value(i)
+     enddo
+   endif
 SUBST [X]
-Core   ;;
-Mu     ;;
-Mu_1b  ;;
-Muenv  ;;
-Mur    ;;
-Qmckl  ;;
-Simple ;;
+Core       ;;
+Simple     ;;
+Mu         ;;
+Mu_Nu      ;;
+Mur        ;;
+Qmckl      ;;
+Boys       ;;
+Boys_Handy ;;
 END_TEMPLATE
 
      if (ifirst == 0) then
@@ -77,23 +78,24 @@ END_PROVIDER
  if (do_jast) then
 
 BEGIN_TEMPLATE
-     if ( jast_type == t_$X ) then
-        !DIR$ VECTOR ALIGNED
-        !DIR$ LOOP COUNT (200)
-        do i = 1, elec_num
-          jast_grad_jast_inv_x(i) = sgn_jast * jast_elec_$X_grad_x(i)
-          jast_grad_jast_inv_y(i) = sgn_jast * jast_elec_$X_grad_y(i)
-          jast_grad_jast_inv_z(i) = sgn_jast * jast_elec_$X_grad_z(i)
-        enddo
-     endif
+   if ( j2e_type == t_$X ) then
+      !DIR$ VECTOR ALIGNED
+      !DIR$ LOOP COUNT (200)
+      do i = 1, elec_num
+        jast_grad_jast_inv_x(i) = sgn_jast * jast_elec_$X_grad_x(i)
+        jast_grad_jast_inv_y(i) = sgn_jast * jast_elec_$X_grad_y(i)
+        jast_grad_jast_inv_z(i) = sgn_jast * jast_elec_$X_grad_z(i)
+      enddo
+   endif
 SUBST [ X ]
-Core   ;;
-Mu     ;;
-Mu_1b  ;;
-Muenv  ;;
-Mur    ;;
-Qmckl  ;;
-Simple ;;
+Core       ;;
+Simple     ;;
+Mu         ;;
+Mu_Nu      ;;
+Mur        ;;
+Qmckl      ;;
+Boys       ;;
+Boys_Handy ;;
 END_TEMPLATE
 
    !DIR$ VECTOR ALIGNED
@@ -108,9 +110,64 @@ END_TEMPLATE
 END_PROVIDER
 
 
+! BEGIN_PROVIDER [ double precision, jast_lapl, (elec_num) ]
+!&BEGIN_PROVIDER [ double precision, jast_lapl_jast_inv, (elec_num) ]
+! implicit none
+! include '../types.F'
+! BEGIN_DOC  
+!! Lapl(J)/J
+! END_DOC
+!
+! integer :: i
+!
+! integer,save :: ifirst = 0
+! if (ifirst == 0) then
+!   ifirst = 1
+!   !DIR$ VECTOR ALIGNED
+!   jast_lapl_jast_inv = 0.d0
+!   jast_lapl          = 0.d0
+! endif
+!
+!! !DIR$ VECTOR ALIGNED
+!! jast_lapl_jast_inv = 0.d0
+!! jast_lapl          = 0.d0
+!
+! if (do_jast) then
+!
+!BEGIN_TEMPLATE
+!   if (j2e_type == t_$X) then
+!     !DIR$ VECTOR ALIGNED
+!     !DIR$ LOOP COUNT (200)
+!     do i=1,elec_num
+!       jast_lapl_jast_inv(i) = ( jast_elec_$X_lapl(i) + &
+!            jast_grad_jast_inv_x(i)*jast_grad_jast_inv_x(i) + &
+!            jast_grad_jast_inv_y(i)*jast_grad_jast_inv_y(i) + &
+!            jast_grad_jast_inv_z(i)*jast_grad_jast_inv_z(i) )
+!     enddo
+!   endif
+!SUBST [X]
+!Core       ;;
+!Simple     ;;
+!Mu         ;;
+!Mu_Nu      ;;
+!Mur        ;;
+!Qmckl      ;;
+!Boys       ;;
+!Boys_Handy ;;
+!END_TEMPLATE
+!
+!   !DIR$ VECTOR ALIGNED
+!   !DIR$ LOOP COUNT (256)
+!   do i=1,elec_num
+!     jast_lapl(i) = jast_lapl_jast_inv(i) * jast_value
+!   enddo
+!
+! endif
+!END_PROVIDER
+
 ! ---
 
-BEGIN_PROVIDER [ double precision, jast_lapl_jast_inv, (elec_num) ]
+BEGIN_PROVIDER [double precision, jast_lapl_jast_inv, (elec_num)]
 
   BEGIN_DOC
   !
@@ -134,24 +191,25 @@ BEGIN_PROVIDER [ double precision, jast_lapl_jast_inv, (elec_num) ]
   if(do_jast) then
 
 BEGIN_TEMPLATE
-      if(jast_type == t_$X) then
-        !DIR$ VECTOR ALIGNED
-        !DIR$ LOOP COUNT (200)
-        do i = 1, elec_num
-          jast_lapl_jast_inv(i) = sgn_jast * jast_elec_$X_lapl(i)                   &
-                                + jast_grad_jast_inv_x(i) * jast_grad_jast_inv_x(i) &
-                                + jast_grad_jast_inv_y(i) * jast_grad_jast_inv_y(i) &
-                                + jast_grad_jast_inv_z(i) * jast_grad_jast_inv_z(i)
-        enddo
-      endif
+    if(j2e_type == t_$X) then
+      !DIR$ VECTOR ALIGNED
+      !DIR$ LOOP COUNT (200)
+      do i = 1, elec_num
+        jast_lapl_jast_inv(i) = sgn_jast * jast_elec_$X_lapl(i)                   &
+                              + jast_grad_jast_inv_x(i) * jast_grad_jast_inv_x(i) &
+                              + jast_grad_jast_inv_y(i) * jast_grad_jast_inv_y(i) &
+                              + jast_grad_jast_inv_z(i) * jast_grad_jast_inv_z(i) 
+      enddo
+    endif
 SUBST [X]
-Core   ;;
-Mu     ;;
-Mu_1b  ;;
-Muenv  ;;
-Mur    ;;
-Qmckl  ;;
-Simple ;;
+Core       ;;
+Simple     ;;
+Mu         ;;
+Mu_Nu      ;;
+Mur        ;;
+Qmckl      ;;
+Boys       ;;
+Boys_Handy ;;
 END_TEMPLATE
 
   endif
@@ -160,7 +218,7 @@ END_PROVIDER
 
 ! ---
 
-BEGIN_PROVIDER [ double precision, jast_lapl1, (elec_num) ]
+BEGIN_PROVIDER [double precision, jast_lapl1, (elec_num)]
 
   BEGIN_DOC
   !
@@ -184,7 +242,7 @@ BEGIN_PROVIDER [ double precision, jast_lapl1, (elec_num) ]
   if(do_jast) then
 
 BEGIN_TEMPLATE
-    if(jast_type == t_$X) then
+    if(j2e_type == t_$X) then
       !DIR$ VECTOR ALIGNED
       !DIR$ LOOP COUNT (200)
       do i = 1, elec_num
@@ -192,13 +250,14 @@ BEGIN_TEMPLATE
       enddo
     endif
 SUBST [X]
-Core   ;;
-Mu     ;;
-Mu_1b  ;;
-Muenv  ;;
-Mur    ;;
-Qmckl  ;;
-Simple ;;
+Core       ;;
+Simple     ;;
+Mu         ;;
+Mu_Nu      ;;
+Mur        ;;
+Qmckl      ;;
+Boys       ;;
+Boys_Handy ;;
 END_TEMPLATE
 
   endif
@@ -207,7 +266,7 @@ END_PROVIDER
 
 ! ---
 
-BEGIN_PROVIDER [ double precision, jast_lapl2, (elec_num) ]
+BEGIN_PROVIDER [double precision, jast_lapl2, (elec_num)]
 
   BEGIN_DOC
   !

@@ -13,7 +13,7 @@ let simulation_nucl_fitcusp_factor  = lazy(
 
 let electrons_elec_walk_num         = lazy ( 100         )
 let electrons_elec_walk_num_tot     = lazy ( 1000        )
-let jastrow_jast_type               = lazy ( "None"      )
+let jastrow_j2e_type                = lazy ( "None"      )
 let jastrow_jpsi_type               = lazy ( "None"      )
 let simulation_block_time           = lazy ( 30          )
 let simulation_ci_threshold         = lazy ( 1.e-8       )
@@ -27,7 +27,7 @@ let reset_defaults () =
   List.iter (fun x -> Sys.remove ( (Lazy.force Qputils.ezfio_filename) ^ x))
     [ "/electrons/elec_walk_num"       ;
       "/electrons/elec_walk_num_tot"   ;
-      "/jastrow/jast_type"             ;
+      "/jastrow/j2e_type"              ;
       "/jastrow/jpsi_type"             ;
       "/simulation/block_time"         ;
       "/simulation/ci_threshold"       ;

@@ -144,18 +144,21 @@ IRPSOURCES= \
   src/AO/ao_oneD.irp.f \
   src/AO/ao_point.irp.f \
   src/AO/ao_utils.irp.f \
-  src/JASTROW/jastrow_mur.irp.f \
   src/JASTROW/jastrow_param.irp.f \
   src/JASTROW/jastrow_psi.irp.f \
   src/JASTROW/jastrow_simple.irp.f \
-  src/JASTROW/jastrow_1b.irp.f \
   src/JASTROW/jastrow_core.irp.f \
   src/JASTROW/jastrow_full.irp.f \
-  src/JASTROW/jastrow_mu_1b.irp.f \
-  src/JASTROW/jastrow_muenv.irp.f \
-  src/JASTROW/jastrow_muenv_useful.irp.f \
+  src/JASTROW/jastrow_1e.irp.f \
   src/JASTROW/jastrow_mu.irp.f \
+  src/JASTROW/jastrow_mu_nu.irp.f \
+  src/JASTROW/jastrow_mu_useful.irp.f \
+  src/JASTROW/jastrow_mur.irp.f \
   src/JASTROW/jastrow_qmckl.irp.f \
+  src/JASTROW/jastrow_env.irp.f \
+  src/JASTROW/jastrow_boys.irp.f \
+  src/JASTROW/jastrow_boys_handy.irp.f \
+  src/JASTROW/jastrow_boys_handy_useful.irp.f \
   src/MAIN/admc.irp.f \
   src/MAIN/SVD_info.irp.f \
   src/MAIN/vmc_test.irp.f \
@@ -166,6 +169,7 @@ IRPSOURCES= \
   src/MAIN/qmcchem_info.irp.f \
   src/MAIN/qmc_create_walkers.irp.f \
   src/MAIN/qmc.irp.f \
+  src/MAIN/deb_ao.irp.f \
   src/SAMPLING/block.irp.f \
   src/SAMPLING/brownian_step.irp.f \
   src/SAMPLING/dmc_step.irp.f \

@@ -44,7 +44,7 @@ subroutine get_ao_val_der_lap(i, r, ao_val, ao_der, ao_lap)
   !print*, ao_lap
 
   return
-end subroutine get_ao_val_der_lap
+end
 
 ! ---
 
@@ -133,5 +133,5 @@ subroutine get_ao_useful(i, d, ao_axis_val, ao_axis_der, ao_axis_lap, ao_1d_val,
   ! ---
 
   return
-end subroutine get_ao_useful
+end
 
