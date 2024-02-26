@@ -13,16 +13,16 @@ program deb_ao
 !  print*, ' VAL, GRAD, LAPL of AOs on r ='
 !  print*, r
 
-  npoint = 4122
-  open(unit=11, name="grid", action="read")
-    do ipoint = 1, npoint
-      read(11, *) r(1), r(2), r(3)
-      do i = 1, ao_num
-        call get_ao_val_der_lap(i, r, ao_val, ao_der, ao_lap)
-        write(*, '(5(f15.7, 3X))') ao_val, ao_der, ao_lap
-      enddo
-    enddo
-  close(11)
+!  npoint = 4122
+!  open(unit=11, name="grid", action="read")
+!    do ipoint = 1, npoint
+!      read(11, *) r(1), r(2), r(3)
+!      do i = 1, ao_num
+!        call get_ao_val_der_lap(i, r, ao_val, ao_der, ao_lap)
+!        write(*, '(5(f15.7, 3X))') ao_val, ao_der, ao_lap
+!      enddo
+!    enddo
+!  close(11)
 
-end
+end program deb_ao
 
